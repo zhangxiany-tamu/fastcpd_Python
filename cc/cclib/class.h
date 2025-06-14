@@ -1,81 +1,23 @@
 #ifndef FASTCPD_CLASS_H_
 #define FASTCPD_CLASS_H_
 
-// RcppArmadillo has to be on the top of the include list to avoid
-// compiler errors.
-#include <RcppArmadillo.h>
-#include "RProgress.h"
-#include <memory>
-#include <unordered_map>
-
-constexpr char kRProgress[] = "[:bar] :current/:total in :elapsed";
+#include <armadillo>
+#include <optional>
 
 namespace fastcpd {
-
-namespace test {
-
-// The FastcpdTest class provides static helper methods for testing Fastcpd.
-class FastcpdTest {
- public:
-  // Computes the gradient using the Armadillo implementation.
-  static arma::colvec GetGradientArma(arma::mat const& data,
-                                      unsigned int const segment_start,
-                                      unsigned int const segment_end,
-                                      arma::colvec const& theta);
-
-  // Computes the Hessian using the Armadillo implementation.
-  static arma::mat GetHessianArma(arma::mat const& data,
-                                  unsigned int const segment_start,
-                                  unsigned int const segment_end,
-                                  arma::colvec const& theta);
-
-  // Computes the Hessian for the binomial model.
-  static arma::mat GetHessianBinomial(arma::mat const& data,
-                                      unsigned int const segment_start,
-                                      unsigned int const segment_end,
-                                      arma::colvec const& theta);
-
-  // Computes the Hessian for the Poisson model.
-  static arma::mat GetHessianPoisson(arma::mat const& data,
-                                     unsigned int const segment_start,
-                                     unsigned int const segment_end,
-                                     arma::colvec const& theta);
-
-  // Computes the negative log-likelihood for the SEN model.
-  static double GetNllSen(arma::mat const& data,
-                          unsigned int const segment_start,
-                          unsigned int const segment_end,
-                          arma::colvec const& theta);
-
-  // Computes the negative log-likelihood for the PELT model.
-  static std::tuple<arma::colvec, arma::mat, double> GetNllPelt(
-      arma::mat const& data, unsigned int const segment_start,
-      unsigned int const segment_end, bool const cv,
-      std::optional<arma::colvec> const& start);
-};
-
-}  // namespace test
 
 namespace classes {
 
 class Fastcpd {
  public:
-  Fastcpd(
-      double const beta, std::optional<Rcpp::Function> const& cost,
-      std::function<double(arma::mat)> const& cost_pelt,
-      std::function<double(arma::mat, arma::colvec)> const& cost_sen,
-      std::string const& cost_adjustment,
-      std::function<arma::colvec(arma::mat, arma::colvec)> const& cost_gradient,
-      std::function<arma::mat(arma::mat, arma::colvec)> const& cost_hessian,
-      bool const cp_only, arma::mat const& data, double const epsilon,
-      std::string const& family,
-      std::function<unsigned int(unsigned int)> const& multiple_epochs_function,
-      arma::colvec const& line_search, arma::colvec const& lower,
-      double const momentum_coef, arma::colvec const& order, int const p,
-      unsigned int const p_response, double const pruning_coef,
-      bool const r_progress, int const segment_count, double const trim,
-      arma::colvec const& upper, double const vanilla_percentage,
-      arma::mat const& variance_estimate, bool const warm_start);
+  Fastcpd(double const beta, std::string const& cost_adjustment,
+          bool const cp_only, arma::mat const& data, double const epsilon,
+          std::string const& family, arma::colvec const& line_search,
+          arma::colvec const& lower, double const momentum_coef,
+          arma::colvec const& order, int const p, unsigned int const p_response,
+          double const pruning_coef, int const segment_count, double const trim,
+          arma::colvec const& upper, double const vanilla_percentage,
+          arma::mat const& variance_estimate, bool const warm_start);
 
   std::tuple<arma::colvec, arma::colvec, arma::colvec, arma::mat, arma::mat>
   Run();
@@ -100,7 +42,6 @@ class Fastcpd {
                                arma::colvec const& theta);
   };
 
-  void CreateRProgress();
   void CreateSenParameters();
   void CreateSegmentStatistics();
   double GetCostAdjustmentValue(unsigned int const nrows);
@@ -151,27 +92,15 @@ class Fastcpd {
   arma::mat GetHessianPoisson(unsigned int const segment_start,
                               unsigned int const segment_end,
                               arma::colvec const& theta);
-  void GetNllPeltArma(unsigned int const segment_start,
-                      unsigned int const segment_end, bool const cv,
-                      std::optional<arma::colvec> const& start);
-  void GetNllPeltCustom(unsigned int const segment_start,
-                        unsigned int const segment_end, bool const cv,
-                        std::optional<arma::colvec> const& start);
-  void GetNllPeltGarch(unsigned int const segment_start,
-                       unsigned int const segment_end, bool const cv,
-                       std::optional<arma::colvec> const& start);
-  void GetNllPeltGlm(unsigned int const segment_start,
-                     unsigned int const segment_end, bool const cv,
-                     std::optional<arma::colvec> const& start);
-  void GetNllPeltLasso(unsigned int const segment_start,
-                       unsigned int const segment_end, bool const cv,
-                       std::optional<arma::colvec> const& start);
   void GetNllPeltMean(unsigned int const segment_start,
                       unsigned int const segment_end, bool const cv,
                       std::optional<arma::colvec> const& start);
-  void GetNllPeltMeanValue(unsigned int const segment_start,
-                           unsigned int const segment_end, bool const cv,
-                           std::optional<arma::colvec> const& start);
+  void GetNllPeltMean1dValue(unsigned int const segment_start,
+                             unsigned int const segment_end, bool const cv,
+                             std::optional<arma::colvec> const& start);
+  void GetNllPeltMeanXdValue(unsigned int const segment_start,
+                             unsigned int const segment_end, bool const cv,
+                             std::optional<arma::colvec> const& start);
   void GetNllPeltMeanvariance(unsigned int const segment_start,
                               unsigned int const segment_end, bool const cv,
                               std::optional<arma::colvec> const& start);
@@ -207,8 +136,6 @@ class Fastcpd {
   double GetNllSenPoisson(unsigned int const segment_start,
                           unsigned int const segment_end,
                           arma::colvec const& theta);
-  void GetOptimizedCostResult(unsigned int const segment_start,
-                              unsigned int const segment_end);
   arma::colvec UpdateChangePointSet();
   void UpdateSenParameters();
   void UpdateSenParametersStep(int const segment_start, int const segment_end,
@@ -216,7 +143,6 @@ class Fastcpd {
   void UpdateSenParametersSteps(int const segment_start,
                                 unsigned int const segment_end, int const i);
   void UpdateStep();
-  void UpdateRProgress();
 
   arma::colvec active_coefficients_count_;
   double beta_;
@@ -224,19 +150,12 @@ class Fastcpd {
   arma::mat coefficients_;
   arma::mat coefficients_sum_;
   std::string const cost_adjustment_;
-  std::optional<Rcpp::Function> const cost_function_;
-  std::function<double(arma::mat)> const cost_function_pelt_;
-  std::function<double(arma::mat, arma::colvec)> const cost_function_sen_;
-  std::function<arma::colvec(arma::mat, arma::colvec)> const cost_gradient_;
-  std::function<arma::mat(arma::mat, arma::colvec)> const cost_hessian_;
   bool const cp_only_;
   arma::mat const data_;
   arma::mat const data_c_;
-  unsigned int const data_c_n_cols_;
   unsigned int const data_c_n_rows_;
   double const* data_c_ptr_;
   unsigned int const data_n_dims_;
-  unsigned int const data_n_cols_;
   unsigned int const data_n_rows_;
   double const epsilon_in_hessian_;
   arma::colvec error_standard_deviation_;
@@ -263,7 +182,6 @@ class Fastcpd {
   arma::colvec line_search_;
   arma::colvec momentum_;
   double const momentum_coef_;
-  std::function<unsigned int(unsigned int)> const multiple_epochs_function_;
   arma::colvec objective_function_values_;
   arma::colvec objective_function_values_candidates_;
   double* objective_function_values_candidates_ptr_;
@@ -278,12 +196,10 @@ class Fastcpd {
   arma::ucolvec pruned_set_;
   unsigned int pruned_set_size_ = 2;
   double const pruning_coefficient_;
-  bool const r_progress_;
   unsigned int const regression_response_count_;
   arma::colvec result_coefficients_;
   arma::mat result_residuals_;
   double result_value_;
-  std::unique_ptr<RProgress::RProgress> rProgress_;
   arma::mat segment_coefficients_;
   int const segment_count_;
   arma::colvec segment_indices_;
@@ -293,7 +209,6 @@ class Fastcpd {
   double const vanilla_percentage_;
   arma::mat const variance_estimate_;
   arma::mat warm_start_;
-  friend fastcpd::test::FastcpdTest;
 };
 
 }  // namespace classes

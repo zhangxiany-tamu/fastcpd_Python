@@ -1,0 +1,8 @@
+recursive-include bazel *
+recursive-include fastcpd *
+include bazelisk.py
+include WORKSPACE
+include .bazelversion
+include .bazelrc
+
+recursive-include cc *

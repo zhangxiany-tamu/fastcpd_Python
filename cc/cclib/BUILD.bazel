@@ -1,0 +1,28 @@
+cc_library(
+    name = "class",
+    srcs = ["class.cc"],
+    hdrs = ["class.h"],
+    copts = ["-std=c++17"],
+    # This visibility is needed for the third-party fastcpd Python bindings.
+    visibility = ["//visibility:public"],
+    deps = ["@armadillo_headers//:armadillo_header"],
+)
+
+cc_test(
+    name = "class_test",
+    size = "small",
+    srcs = ["class_test.cc"],
+    deps = [
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
+cc_library(
+    name = "hello-time",
+    srcs = ["hello-time.cc"],
+    hdrs = ["hello-time.h"],
+    visibility = [
+        "//cc/main:__pkg__",
+    ],
+)
