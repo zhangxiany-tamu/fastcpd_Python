@@ -5,6 +5,5 @@ py_test(
     srcs = ["test_fastcpd.py"],
     deps = [
         "//fastcpd:fastcpd_init",
-        # "@pypi//numpy",
     ],
 )

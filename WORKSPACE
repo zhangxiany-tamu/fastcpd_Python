@@ -94,14 +94,3 @@ http_archive(
     strip_prefix = "googletest-1.16.0",
     url = "https://github.com/google/googletest/releases/download/v1.16.0/googletest-1.16.0.tar.gz",
 )
-
-# load("@rules_python//python:pip.bzl", "pip_parse")
-
-# pip_parse(
-#    name = "pypi",
-#    requirements_lock = "//:requirements.txt",
-# )
-
-# load("@pypi//:requirements.bzl", "install_deps")
-
-# install_deps()
