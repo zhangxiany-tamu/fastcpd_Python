@@ -1,21 +1,10 @@
-config_setting(
-    name    = "windows",
-    values  = { "cpu": "x64_windows" },
-)
-
 cc_library(
     name = "class",
     srcs = ["class.cc"],
     hdrs = ["class.h"],
-    copts = select({
-        ":windows": [
-            "/std:c++17",           # MSVC syntax
-            "/D_USE_MATH_DEFINES",  # expose M_PI, M_E, etc.
-        ],
-        "//conditions:default": [
-            "-std=c++17",           # GCC/Clang syntax
-        ],
-    }),
+    copts = [
+        "-std=c++17",
+    ],
     # This visibility is needed for the third-party fastcpd Python bindings.
     visibility = ["//visibility:public"],
     deps = ["@armadillo_headers//:armadillo_header"],

@@ -27,7 +27,7 @@ jobs:
 
       # test
       - name: Build the source
-        run: bazel.exe build //fastcpd/...
+        run: bazel.exe build --config=windows //fastcpd/...
 
   test_windows_python:
     needs: build_windows_bazel
