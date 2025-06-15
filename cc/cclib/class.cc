@@ -1,5 +1,5 @@
 #include "class.h"
-
+#include <cmath>
 #include <optional>
 
 using ::arma::abs;

@@ -10,6 +10,7 @@ cc_library(
     copts = select({
         ":windows": [
             "/std:c++17",           # MSVC syntax
+            "/D_USE_MATH_DEFINES",  # expose M_PI, M_E, etc.
         ],
         "//conditions:default": [
             "-std=c++17",           # GCC/Clang syntax
