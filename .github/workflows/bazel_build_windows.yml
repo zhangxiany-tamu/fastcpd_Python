@@ -19,8 +19,15 @@ jobs:
       - name: Install Bazelisk
         run: choco install bazelisk --no-progress
 
-      - name: Install OpenBLAS
-        run: choco install openblas --no-progress
+      - name: Bootstrap vcpkg & install OpenBLAS
+        uses: microsoft/vcpkg-action@v2
+        with:
+          vcpkgDirectory: vcpkg
+          install: |
+            openblas:x64-windows
+
+      - name: Integrate vcpkg
+        run: vcpkg integrate install
 
       - name: Ensure bazel points to bazelisk
         shell: pwsh
