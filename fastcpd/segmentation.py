@@ -3,9 +3,9 @@ import numpy as np
 # from patsy import dmatrices
 
 # Assume fastcpd_impl and helper functions are exposed via pybind11
-from fastcpd.interface import fastcpd_impl
 import fastcpd.variance_estimation
 from math import log, log2
+from fastcpd.interface import fastcpd_impl
 
 
 def pelt(

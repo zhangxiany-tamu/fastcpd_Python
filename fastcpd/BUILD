@@ -1,4 +1,5 @@
 load("@rules_python//python:packaging.bzl", "py_package", "py_wheel")
+load("@rules_python//python:py_library.bzl", "py_library")
 
 py_library(
     name = "fastcpd_init",
@@ -10,6 +11,7 @@ py_library(
     visibility = ["//visibility:public"],
     deps = [
         ":py_fastcpd",
+        "@pypi//numpy:pkg",
     ],
 )
 
