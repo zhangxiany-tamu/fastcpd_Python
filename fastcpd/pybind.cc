@@ -2,17 +2,14 @@
 
 #define PY_SSIZE_T_CLEAN
 #define CONFIG_64
-#include <Python.h>
-#include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
+#include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-
-namespace py = pybind11;
+#include <Python.h>
 
 std::vector<double> fastcpd_impl(
-  std::vector<std::vector<double>> &data,
-  std::vector<std::vector<double>> &variance_estimate
-) {
+    std::vector<std::vector<double>>& data,
+    std::vector<std::vector<double>>& variance_estimate) {
   // Convert input data to arma::mat
   arma::mat data_mat(data.size(), data[0].size());
   for (size_t i = 0; i < data.size(); ++i) {
@@ -22,7 +19,8 @@ std::vector<double> fastcpd_impl(
   }
 
   // Convert variance_estimate to arma::mat
-  arma::mat variance_estimate_mat(variance_estimate.size(), variance_estimate[0].size());
+  arma::mat variance_estimate_mat(variance_estimate.size(),
+                                  variance_estimate[0].size());
   for (size_t i = 0; i < variance_estimate.size(); ++i) {
     for (size_t j = 0; j < variance_estimate[i].size(); ++j) {
       variance_estimate_mat(i, j) = variance_estimate[i][j];
@@ -58,8 +56,8 @@ std::vector<double> fastcpd_impl(
   return std::vector<double>(change_points.begin(), change_points.end());
 }
 
-PYBIND11_MODULE(interface, m)
-{
-    m.doc() = "fastcpd C++/Python interface";
-    m.def("fastcpd_impl", &fastcpd_impl, "A function that computes the fast change point detection");
+PYBIND11_MODULE(interface, module) {
+  module.doc() = "fastcpd C++/Python interface";
+  module.def("fastcpd_impl", &fastcpd_impl,
+             "A function that computes the fast change point detection");
 }
