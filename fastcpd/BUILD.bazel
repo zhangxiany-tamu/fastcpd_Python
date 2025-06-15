@@ -1,6 +1,28 @@
 load("@rules_python//python:packaging.bzl", "py_package", "py_wheel")
 load("@rules_python//python:py_library.bzl", "py_library")
 
+cc_library(
+    name = "class",
+    srcs = ["class.cc"],
+    hdrs = ["class.h"],
+    copts = [
+        "-std=c++17",
+    ],
+    deps = [
+        "@armadillo_headers//:armadillo_header",
+    ],
+)
+
+cc_test(
+    name = "class_test",
+    size = "small",
+    srcs = ["class_test.cc"],
+    deps = [
+        "@googletest//:gtest",
+        "@googletest//:gtest_main",
+    ],
+)
+
 py_library(
     name = "fastcpd_init",
     srcs = [
@@ -8,7 +30,6 @@ py_library(
         "segmentation.py",
         "variance_estimation.py",
     ],
-    visibility = ["//visibility:public"],
     deps = [
         ":py_fastcpd",
         "@pypi//numpy:pkg",
@@ -17,7 +38,6 @@ py_library(
 
 py_library(
     name = "fastcpd_py_library",
-    visibility = ["//visibility:public"],
     deps = [
         ":fastcpd_init",
         ":py_fastcpd",
@@ -26,7 +46,6 @@ py_library(
 
 py_package(
     name = "fastcpd_py_package",
-    visibility = ["//visibility:public"],
     deps = [
         ":fastcpd_py_library",
     ],
@@ -62,9 +81,8 @@ cc_binary(
         "@platforms//os:linux": True,
         "@platforms//os:windows": True,
     }),
-    visibility = ["//visibility:public"],
     deps = [
-        "//cc/cclib:class",
+        ":class",
         "@com_github_pybind_pybind11//:pybind11",
         "@local_config_python//:python_headers",
     ],
@@ -77,5 +95,4 @@ py_library(
         ":interface",
     ],
     imports = ["."],
-    visibility = ["//visibility:public"],
 )

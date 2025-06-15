@@ -1,4 +1,4 @@
-#include "cc/cclib/class.h"
+#include "class.h"
 
 #define PY_SSIZE_T_CLEAN
 #define CONFIG_64

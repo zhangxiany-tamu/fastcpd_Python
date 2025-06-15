@@ -6,5 +6,3 @@ include .bazelversion
 include .bazelrc
 include requirements_lock.txt
 include BUILD.bazel
-
-recursive-include cc *
