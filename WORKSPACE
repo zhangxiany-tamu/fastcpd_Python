@@ -149,27 +149,6 @@ http_archive(
     url = "https://github.com/google/googletest/releases/download/v1.16.0/googletest-1.16.0.tar.gz",
 )
 
-def _maybe_openblas_impl(ctx):
-    # ctx.os.family will be "windows" on Windows hosts
-    if ctx.os.family == "windows":
-        return ctx.new_local_repository(
-            name = ctx.name,
-            path = "C:/tools/openblas",
-            build_file_content = """
-   cc_library(
-     name     = "openblas",
-     hdrs     = glob(['include/**/*.h']),
-     linkopts = ['/LIBPATH:C:/tools/openblas/lib', 'openblas.lib'],
-     visibility = ['//visibility:public'],
-   )
-   """,
-        )
-    # on non-windows we do nothing
-    return []
-
-maybe_openblas = repository_rule(
-    implementation = _maybe_openblas_impl,
-    local          = True,
-)
+load("//bazel:windows_openblas.bzl", "maybe_openblas")
 
 maybe_openblas(name = "openblas")
