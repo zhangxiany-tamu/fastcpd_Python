@@ -16,6 +16,18 @@ jobs:
       # the rest of the steps
       - uses: actions/checkout@v4
 
+      - name: Setup Bazel (via Bazelisk)
+        uses: bazel-contrib/setup-bazel@0.15.0
+        with:
+          # leave empty to defer to .bazelversion
+          bazel-version: ''
+          # Avoid downloading Bazel every time.
+          bazelisk-cache: true
+          # Store build cache per workflow.
+          disk-cache: ${{ github.workflow }}
+          # Share repository cache between workflows.
+          repository-cache: true
+
       # test
       - name: Build the source
         run: bazel.exe build //fastcpd/...
