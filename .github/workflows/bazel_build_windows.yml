@@ -19,6 +19,9 @@ jobs:
       - name: Install Bazelisk
         run: choco install bazelisk --no-progress
 
+      - name: Install OpenBLAS
+        run: choco install openblas --no-progress
+
       - name: Ensure bazel points to bazelisk
         shell: pwsh
         run: |
