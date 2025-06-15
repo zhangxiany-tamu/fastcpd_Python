@@ -16,17 +16,14 @@ jobs:
       # the rest of the steps
       - uses: actions/checkout@v4
 
-      - name: Setup Bazel (via Bazelisk)
-        uses: bazel-contrib/setup-bazel@0.15.0
-        with:
-          # leave empty to defer to .bazelversion
-          bazel-version: ''
-          # Avoid downloading Bazel every time.
-          bazelisk-cache: true
-          # Store build cache per workflow.
-          disk-cache: ${{ github.workflow }}
-          # Share repository cache between workflows.
-          repository-cache: true
+      - name: Install Bazelisk
+        run: choco install bazelisk --no-progress
+
+      - name: Ensure bazel points to bazelisk
+        shell: pwsh
+        run: |
+          # on windows 'bazel' should already be on PATH via the choco package
+          bazel version
 
       # test
       - name: Build the source
