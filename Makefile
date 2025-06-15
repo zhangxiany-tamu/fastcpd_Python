@@ -1,5 +1,5 @@
 PYFILES=$(shell find fastcpd -name "*.py")
-PYTESTFILES=$(shell find test -name "*.py")
+PYTESTFILES=$(shell find tests -name "*.py")
 
 PYTHON ?= python
 
@@ -38,8 +38,8 @@ test_short:
 	source venv/bin/activate && \
 	mkdir -p tmp && \
 		cd tmp && \
-		cp -R ../test  . && \
-		$(PYTHON) -m pytest test -m "not long"
+		cp -R ../tests  . && \
+		$(PYTHON) -m pytest tests -m "not long"
 	#$(PYTHON) -m pytest $(PYTESTFILES) -m "not long"
 	rm -rf tmp
 

@@ -63,5 +63,5 @@ jobs:
         run: |
           mkdir -p tmp && \
           cd tmp && \
-          cp -R ../test  . && \
-          python3 -m pytest test -m "not long"
+          cp -R ../tests  . && \
+          python3 -m pytest tests -m "not long"
