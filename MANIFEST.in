@@ -4,5 +4,6 @@ include bazelisk.py
 include WORKSPACE
 include .bazelversion
 include .bazelrc
+include requirements_lock.txt
 
 recursive-include cc *
