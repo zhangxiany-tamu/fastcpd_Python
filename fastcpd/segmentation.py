@@ -111,16 +111,50 @@ def pelt(
     elif family == 'mean':
         variance_estimation = fastcpd.variance_estimation.mean(data)
 
+    if family == 'mean':
+        p = data.shape[1]
+    elif family == 'variance':
+        p = data.shape[1] ** 2
+    elif family == 'meanvariance':
+        p = data.shape[1] + data.shape[1] ** 2
+
     if pruning_coef is None:
         pruning_coef = 0.0
     if cost_adjustment == "MBIC":
-        pruning_coef += data.shape[1] * log(2)
+        pruning_coef += p * log(2)
     elif cost_adjustment == "MDL":
-        pruning_coef += data.shape[1] * log2(2)
+        pruning_coef += p * log2(2)
+
+    if isinstance(beta, str):
+        if beta == 'BIC':
+            beta = (p + 1) * log(data.shape[0]) / 2
+        elif beta == 'MBIC':
+            beta = (p + 2) * log(data.shape[0]) / 2
+        elif beta == 'MDL':
+            beta = (p + 2) * log2(data.shape[0]) / 2
+        else:
+            raise ValueError(f"Unknown beta criterion: {beta}")
 
     result = fastcpd_impl(
+        beta,
+        cost_adjustment,
+        cp_only,
         data,
-        variance_estimation
+        epsilon,
+        family,
+        line_search,
+        [],
+        momentum_coef,
+        order,
+        p,
+        0,
+        pruning_coef,
+        segment_count,
+        trim,
+        [],
+        1.0,
+        variance_estimation,
+        warm_start,
     )
     return result
 
