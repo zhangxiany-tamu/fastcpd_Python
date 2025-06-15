@@ -16,8 +16,8 @@ load("@rules_python//python:repositories.bzl", "py_repositories", "python_regist
 py_repositories()
 
 python_register_toolchains(
-    name = "python_3_9",
-    python_version = "3.9.13",
+    name = "python_3_10",
+    python_version = "3.10",
 )
 
 load("@rules_python//python:pip.bzl", "pip_parse")
@@ -57,7 +57,7 @@ pip_parse(
     # 3. Wrapper script, like in the autodetecting python toolchain.
     #
     # Here, we use the interpreter constant that resolves to the host interpreter from the default Python toolchain.
-    python_interpreter_target = "@python_3_9_host//:python",
+    python_interpreter_target = "@python_3_10_host//:python",
 
     # (Optional) You can set quiet to False if you want to see pip output.
     #quiet = False,
