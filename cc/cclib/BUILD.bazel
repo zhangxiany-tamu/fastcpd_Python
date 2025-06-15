@@ -7,7 +7,10 @@ cc_library(
     ],
     # This visibility is needed for the third-party fastcpd Python bindings.
     visibility = ["//visibility:public"],
-    deps = ["@armadillo_headers//:armadillo_header"],
+    deps = [
+        "@armadillo_headers//:armadillo_header",
+        "@openblas//:openblas",   # only actually materialized on Windows
+    ],
 )
 
 cc_test(
