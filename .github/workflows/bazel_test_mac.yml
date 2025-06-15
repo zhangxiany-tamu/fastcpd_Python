@@ -1,4 +1,4 @@
-name: CI Mac
+name: bazel_test_mac.yml
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: CI Linux
+name: bazel_build_linux.yml
 
 on: ['push']
 
