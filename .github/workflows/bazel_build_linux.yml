@@ -37,7 +37,7 @@ jobs:
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
 
       - name: Install pip wheel
-        run: make install_clode
+        run: make install_fastcpd
 
       - name: make sdist
         run: make sdist

@@ -18,10 +18,7 @@ jobs:
 
       # test
       - name: Build the source
-        run: bazel.exe build //clode/...
-
-      - name: Build samples
-        run: bazel.exe build //samples/...
+        run: bazel.exe build //fastcpd/...
 
   test_windows_python:
     needs: build_windows_bazel
