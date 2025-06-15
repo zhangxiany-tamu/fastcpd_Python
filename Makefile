@@ -10,7 +10,7 @@ venv:
 
 install:
 	$(PYTHON) -m pip install --upgrade pip && \
-		$(PYTHON) -m pip install -r requirements.txt
+		$(PYTHON) -m pip install -r requirements_lock.txt
 
 install_fastcpd:
 	$(PYTHON) -m pip install . --verbose
