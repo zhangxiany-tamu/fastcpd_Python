@@ -1,8 +1,21 @@
-recursive-include bazel *
-recursive-include fastcpd *
+global-exclude *
+
+graft fastcpd
+graft bazel
+
+include pyproject.toml
+include setup.py
 include bazelisk.py
 include WORKSPACE
 include .bazelversion
 include .bazelrc
 include requirements_lock.txt
 include BUILD.bazel
+
+prune docs/
+prune examples/
+prune .github/
+
+global-exclude *.log
+global-exclude *.tmp
+global-exclude __pycache__/*
