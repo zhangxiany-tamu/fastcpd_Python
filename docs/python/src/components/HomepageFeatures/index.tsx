@@ -15,28 +15,27 @@ const FeatureList: FeatureItem[] = [
     Svg: require('@site/static/img/undraw_docusaurus_mountain.svg').default,
     description: (
       <>
-        Docusaurus was designed from the ground up to be easily installed and
-        used to get your website up and running quickly.
+        Perform fast change point detection easily with R or Python.
       </>
     ),
   },
   {
-    title: 'Focus on What Matters',
+    title: 'Fast Detection',
     Svg: require('@site/static/img/undraw_docusaurus_tree.svg').default,
     description: (
       <>
-        Docusaurus lets you focus on your docs, and we&apos;ll do the chores. Go
-        ahead and move your docs into the <code>docs</code> directory.
+        Compute change points using a fast and efficient algorithm for
+        time series data.
       </>
     ),
   },
   {
-    title: 'Powered by React',
+    title: 'Bilingual Support',
     Svg: require('@site/static/img/undraw_docusaurus_react.svg').default,
     description: (
       <>
-        Extend or customize your website layout by reusing React. Docusaurus can
-        be extended while reusing the same header and footer.
+        Use a single <code>fastcpd()</code> function across both R and Python
+        programming languages.
       </>
     ),
   },

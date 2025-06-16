@@ -6,20 +6,18 @@ doccstat:
   page: true
   socials:
     x: XingchiLi
-    linkedin: doccstat
     github: doccstat
-    newsletter: https://www.greatfrontend.com
+    newsletter: https://xingchi.li
 
-slorber:
-  name: Sébastien Lorber
-  title: Docusaurus maintainer
-  url: https://sebastienlorber.com
-  image_url: https://github.com/slorber.png
+zhangxiany-tamu:
+  name: Xianyang Zhang
+  title: Professor at Texas A&M
+  url: https://zhangxiany-tamu.github.io
+  image_url: https://zhangxiany-tamu.github.io/images/home1.jpg
   page:
     # customize the url of the author page at /blog/authors/<permalink>
     permalink: '/all-sebastien-lorber-articles'
   socials:
-    x: sebastienlorber
-    linkedin: sebastienlorber
-    github: slorber
-    newsletter: https://thisweekinreact.com
+    linkedin: xianyang-zhang-85888634
+    github: zhangxiany-tamu
+    newsletter: https://zhangxiany-tamu.github.io
