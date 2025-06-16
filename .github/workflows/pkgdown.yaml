@@ -44,9 +44,10 @@ jobs:
         run: |
           sudo apt update
           sudo apt install python3-dev
-          python -m pip install . pdoc
-          cd docs
-          pdoc -o ./python fastcpd
+          python -m pip install pdoc
+          make install
+          make install_fastcpd
+          pdoc -o docs/python fastcpd
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
