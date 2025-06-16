@@ -45,7 +45,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/doccstat/fastcpd/',
+            'https://github.com/doccstat/fastcpd/tree/main/',
         },
         blog: {
           showReadingTime: true,
@@ -56,7 +56,7 @@ const config: Config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/doccstat/fastcpd/',
+            'https://github.com/doccstat/fastcpd/tree/main/',
           // Useful options to enforce blogging best practices
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
@@ -73,9 +73,9 @@ const config: Config = {
     // Replace with your project's social card
     image: 'img/docusaurus-social-card.jpg',
     navbar: {
-      title: 'My Site',
+      title: 'fastcpd',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'fastcpd logo',
         src: 'img/logo.svg',
       },
       items: [
@@ -136,7 +136,7 @@ const config: Config = {
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} fastcpd authors. Built with Docusaurus.`,
+      copyright: `Copyright © ${new Date().getFullYear()} fastcpd authors. Built with Docusaurus and ReadtheDocs.`,
     },
     prism: {
       theme: prismThemes.github,
