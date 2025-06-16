@@ -40,11 +40,6 @@ jobs:
         run: pkgdown::build_site_github_pages(dest_dir = "docs/r", new_process = FALSE, install = FALSE)
         shell: Rscript {0}
 
-      - name: Copy logo.svg
-        run: |
-          mkdir -p docs/r/docs/python/static/img
-          cp docs/python/static/img/logo.svg docs/r/docs/python/static/img/logo.svg
-
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
         uses: JamesIves/github-pages-deploy-action@v4.5.0
