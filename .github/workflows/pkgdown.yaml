@@ -42,8 +42,7 @@ jobs:
 
       - name: Copy logo.svg
         run: |
-          mkdir -p docs/r/docs/python/static/img \
-          ls docs/r/docs/python/static/img \
+          mkdir -p docs/r/docs/python/static/img
           cp docs/python/static/img/logo.svg docs/r/docs/python/static/img/logo.svg
 
       - name: Deploy to GitHub pages 🚀
