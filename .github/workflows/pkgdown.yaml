@@ -40,42 +40,45 @@ jobs:
         run: pkgdown::build_site_github_pages(new_process = FALSE, install = FALSE)
         shell: Rscript {0}
 
-      - name: Update system
-        run: sudo apt update
+      # - name: Update system
+      #   run: sudo apt update
 
-      - name: Install Dev Dependencies
-        run: sudo apt install python3-dev libopenblas-dev liblapack-dev
+      # - name: Install Dev Dependencies
+      #   run: sudo apt install python3-dev libopenblas-dev liblapack-dev
 
-      - name: Build the code
-        run: bazel build //... --subcommands
+      # - name: Build the code
+      #   run: bazel build //... --subcommands
 
-      - name: Setup venv
-        run: make venv
+      # - name: Setup venv
+      #   run: make venv
 
-      - uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements_lock.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
+      # - uses: actions/cache@v3
+      #   with:
+      #     path: ~/.cache/pip
+      #     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements_lock.txt') }}
+      #     restore-keys: |
+      #       ${{ runner.os }}-pip-
 
-      - name: Install requirements
-        run: make install
+      # - name: Install requirements
+      #   run: make install
 
-      - uses: actions/cache/save@v3
-        id: cache-pip-linux
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements_lock.txt') }}
+      # - uses: actions/cache/save@v3
+      #   id: cache-pip-linux
+      #   with:
+      #     path: ~/.cache/pip
+      #     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements_lock.txt') }}
 
-      - name: Install pip wheel
-        run: make install_fastcpd
+      # - name: Install pip wheel
+      #   run: make install_fastcpd
 
-      - name: Install `pdoc` to build Python documentation
-        run: python -m pip install pdoc
+      # - name: Install `pdoc` to build Python documentation
+      #   run: python -m pip install pdoc
 
-      - name: Build Python documentation
-        run: pdoc -o docs/python fastcpd
+      # - name: Build Python documentation
+      #   run: pdoc -o docs/python fastcpd
+
+      - name: Copy Python documentation
+        run: cp -r pdoc docs/python
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
