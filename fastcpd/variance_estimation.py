@@ -1,3 +1,7 @@
+"""
+Variance estimation for change point detection models.
+"""
+
 import numpy
 
 

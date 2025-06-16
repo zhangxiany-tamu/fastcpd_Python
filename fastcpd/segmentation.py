@@ -1,16 +1,59 @@
+"""
+Perform change point detection using fastcpd.
+"""
+
 # import pandas as pd
-import numpy as np
+import numpy
 # from patsy import dmatrices
 
-# Assume fastcpd_impl and helper functions are exposed via pybind11
 import fastcpd.variance_estimation
 from math import log, log2
 from fastcpd.interface import fastcpd_impl
 
 
+def mean(data, **kwargs):
+    """Find change points efficiently in mean change models.
+
+    Args:
+        data: Univariate or multivariate data for mean change detection.
+        **kwargs: Additional arguments passed to ``detect()``.
+
+    Returns:
+        A ``FastCPDResult`` object.
+    """
+    return detect(data=data, family='mean', **kwargs)
+
+
+def variance(data, **kwargs):
+    """Find change points efficiently in variance change models.
+
+    Args:
+        data: Univariate or multivariate data for variance change detection.
+        **kwargs: Additional arguments passed to ``detect()``.
+
+    Returns:
+        A ``FastCPDResult`` object.
+    """
+    return detect(data=data, family='variance', **kwargs)
+
+
+def meanvariance(data, **kwargs):
+    """Find change points efficiently in mean and/or variance change models.
+
+    Args:
+        data: Univariate or multivariate data for mean and/or variance change
+            detection.
+        **kwargs: Additional arguments passed to ``detect()``.
+
+    Returns:
+        A ``FastCPDResult`` object.
+    """
+    return detect(data=data, family='meanvariance', **kwargs)
+
+
 def detect(
     formula: str = 'y ~ . - 1',
-    data: np.ndarray = None,
+    data: numpy.ndarray = None,
     beta: object = 'MBIC',
     cost_adjustment: str = 'MBIC',
     family: str = None,
@@ -34,7 +77,7 @@ def detect(
     warm_start: bool = False,
     **kwargs
 ):
-    """Find change points efficiently.
+    r"""Find change points efficiently.
 
     Args:
         formula: A formula string specifying the model to be fitted. The
@@ -42,7 +85,7 @@ def detect(
             RHS. Intercept should be removed by appending '- 1'. By default,
             an intercept column is added as in R's lm().
         data: A NumPy array of shape (T, d) containing the data to be
-            segmented. Each row is a data point z_t in R^d.
+            segmented. Each row is a data point $z_t$ in $\mathbb{R}^d$.
         beta: Penalty criterion for the number of change points. Can be one of
             'BIC', 'MBIC', 'MDL', or a float value.
         cost_adjustment: Cost adjustment criterion modifying the cost function.
@@ -85,7 +128,7 @@ def detect(
     assert cost_adjustment in ('BIC', 'MBIC', 'MDL')
 
     if variance_estimation is not None:
-        variance_estimation = np.asarray(variance_estimation)
+        variance_estimation = numpy.asarray(variance_estimation)
     elif family == 'mean':
         variance_estimation = fastcpd.variance_estimation.mean(data)
 
@@ -135,43 +178,3 @@ def detect(
         warm_start,
     )
     return result
-
-
-def mean(data, **kwargs):
-    """Find change points efficiently in mean change models.
-
-    Args:
-        data: Univariate or multivariate data for mean change detection.
-        **kwargs: Additional arguments passed to ``detect()``.
-
-    Returns:
-        A ``FastCPDResult`` object.
-    """
-    return detect(data=data, family='mean', **kwargs)
-
-
-def variance(data, **kwargs):
-    """Find change points efficiently in variance change models.
-
-    Args:
-        data: Univariate or multivariate data for variance change detection.
-        **kwargs: Additional arguments passed to ``detect()``.
-
-    Returns:
-        A ``FastCPDResult`` object.
-    """
-    return detect(data=data, family='variance', **kwargs)
-
-
-def meanvariance(data, **kwargs):
-    """Find change points efficiently in mean and/or variance change models.
-
-    Args:
-        data: Univariate or multivariate data for mean and/or variance change
-            detection.
-        **kwargs: Additional arguments passed to ``detect()``.
-
-    Returns:
-        A ``FastCPDResult`` object.
-    """
-    return detect(data=data, family='meanvariance', **kwargs)
