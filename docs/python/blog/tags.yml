@@ -1,9 +1,0 @@
-docusaurus:
-  label: Docusaurus
-  permalink: /docusaurus
-  description: Docusaurus tag description
-
-python:
-  label: Python
-  permalink: /python
-  description: Python tag description
