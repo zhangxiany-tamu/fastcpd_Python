@@ -14,7 +14,7 @@ permissions: read-all
 
 jobs:
   pkgdown:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     # Only restrict concurrency for non-PR jobs
     concurrency:
       group: pkgdown-${{ github.event_name != 'pull_request' || github.run_id }}
@@ -71,8 +71,11 @@ jobs:
       - name: Install pip wheel
         run: make install_fastcpd
 
+      - name: Install `pdoc` to build Python documentation
+        run: python -m pip install pdoc
+
       - name: Build Python documentation
-        run: python -m pip install pdoc && pdoc -o docs/python fastcpd
+        run: pdoc -o docs/python fastcpd
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
