@@ -8,7 +8,7 @@ from math import log, log2
 from fastcpd.interface import fastcpd_impl
 
 
-def pelt(
+def detect(
     formula: str = 'y ~ . - 1',
     data: np.ndarray = None,
     beta: object = 'MBIC',
@@ -142,12 +142,12 @@ def mean(data, **kwargs):
 
     Args:
         data: Univariate or multivariate data for mean change detection.
-        **kwargs: Additional arguments passed to ``pelt()``.
+        **kwargs: Additional arguments passed to ``detect()``.
 
     Returns:
         A ``FastCPDResult`` object.
     """
-    return pelt(data=data, family='mean', **kwargs)
+    return detect(data=data, family='mean', **kwargs)
 
 
 def variance(data, **kwargs):
@@ -155,12 +155,12 @@ def variance(data, **kwargs):
 
     Args:
         data: Univariate or multivariate data for variance change detection.
-        **kwargs: Additional arguments passed to ``pelt()``.
+        **kwargs: Additional arguments passed to ``detect()``.
 
     Returns:
         A ``FastCPDResult`` object.
     """
-    return pelt(data=data, family='variance', **kwargs)
+    return detect(data=data, family='variance', **kwargs)
 
 
 def meanvariance(data, **kwargs):
@@ -169,9 +169,9 @@ def meanvariance(data, **kwargs):
     Args:
         data: Univariate or multivariate data for mean and/or variance change
             detection.
-        **kwargs: Additional arguments passed to ``pelt()``.
+        **kwargs: Additional arguments passed to ``detect()``.
 
     Returns:
         A ``FastCPDResult`` object.
     """
-    return pelt(data=data, family='meanvariance', **kwargs)
+    return detect(data=data, family='meanvariance', **kwargs)

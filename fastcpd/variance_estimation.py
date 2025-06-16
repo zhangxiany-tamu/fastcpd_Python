@@ -1,4 +1,4 @@
-import numpy as np
+import numpy
 
 
 def mean(data):
@@ -13,9 +13,9 @@ def mean(data):
     ndarray, shape (p, p)
       Estimated variance-covariance matrix.
     """
-    data_matrix = np.asarray(data)
+    data_matrix = numpy.asarray(data)
     diffs = data_matrix[1:] - data_matrix[:-1]
-    return np.mean(diffs[:, :, None] * diffs[:, None, :], axis=0) / 2
+    return numpy.mean(diffs[:, :, None] * diffs[:, None, :], axis=0) / 2
 
 
 def median(data):
@@ -30,5 +30,5 @@ def median(data):
     float
       Estimated variance.
     """
-    data_flat = np.asarray(data).ravel()
-    return 2 * (2 * np.mean(np.abs(np.diff(data_flat))) / 3) ** 2
+    data_flat = numpy.asarray(data).ravel()
+    return 2 * (2 * numpy.mean(numpy.abs(numpy.diff(data_flat))) / 3) ** 2
