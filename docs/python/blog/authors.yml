@@ -1,13 +1,13 @@
-yangshun:
-  name: Yangshun Tay
-  title: Ex-Meta Staff Engineer, Co-founder GreatFrontEnd
-  url: https://linkedin.com/in/yangshun
-  image_url: https://github.com/yangshun.png
+doccstat:
+  name: Xingchi Li
+  title: Statistics PhD @ TAMU
+  url: https://xingchi.li
+  image_url: https://github.com/doccstat.png
   page: true
   socials:
-    x: yangshunz
-    linkedin: yangshun
-    github: yangshun
+    x: XingchiLi
+    linkedin: doccstat
+    github: doccstat
     newsletter: https://www.greatfrontend.com
 
 slorber:
