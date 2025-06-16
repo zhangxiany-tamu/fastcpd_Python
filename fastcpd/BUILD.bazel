@@ -8,6 +8,9 @@ cc_library(
     copts = [
         "-std=c++17",
     ],
+    visibility = [
+        "//fastcpd/python/cpp:__pkg__",
+    ],
     deps = [
         "@armadillo_headers//:armadillo_header",
     ],
