@@ -10,7 +10,7 @@ if os.getenv('PYTHONPATH') is not None:
     python_paths = os.getenv('PYTHONPATH').split(':')
 try:
     library_paths = site.getsitepackages()
-except AttributeError as e:
+except AttributeError:
     import sysconfig
     library_paths = [sysconfig.get_path('purelib')]
 all_paths = set(python_paths + library_paths)
