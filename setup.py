@@ -174,7 +174,8 @@ class BuildExtCommand(setuptools.command.build_ext.build_ext):
                 ]
                 if 'numpy' not in system_python_libs:
                     system_python_libs.append('numpy')
-                os.environ[SYSTEM_PYTHON_LIBS_ENVVAR] = ','.join(system_python_libs)
+                os.environ[SYSTEM_PYTHON_LIBS_ENVVAR] = ','.join(
+                    system_python_libs)
 
                 bazelisk = os.getenv('FASTCPD_BAZELISK', 'bazelisk.py')
                 # Controlled via `setup.py build_ext --debug` flag.
@@ -195,7 +196,8 @@ class BuildExtCommand(setuptools.command.build_ext.build_ext):
                 if 'darwin' in sys.platform:
                     # Note: Bazel does not use the MACOSX_DEPLOYMENT_TARGET environment
                     # variable.
-                    build_command += ['--macos_minimum_os=%s' % _macos_deployment_target]
+                    build_command += ['--macos_minimum_os=%s' %
+                                      _macos_deployment_target]
                     # Support cross-compilation on macOS
                     # https://github.com/pypa/cibuildwheel/discussions/997#discussioncomment-2045760
                     darwin_cpus = [
@@ -224,7 +226,8 @@ class BuildExtCommand(setuptools.command.build_ext.build_ext):
                     # Note that this also hides most symbols, but ultimately has no effect
                     # on symbol visibility because a separate linker option is already
                     # used to hide all extraneous symbols anyway.
-                    build_command += ['--copt=-fvisibility=hidden', '--dynamic_mode=off']
+                    build_command += ['--copt=-fvisibility=hidden',
+                                      '--dynamic_mode=off']
 
                 print("BUILD COMMAND", build_command)
                 self.spawn(build_command)
@@ -244,7 +247,8 @@ class BuildExtCommand(setuptools.command.build_ext.build_ext):
                 built_ext_path = os.path.join(prebuilt_path, fastcpd_lib_file)
 
             os.makedirs(os.path.dirname(ext_full_path), exist_ok=True)
-            print(f'Built output files: {os.listdir(os.path.dirname(built_ext_path))}')
+            print(
+                f'Built output files: {os.listdir(os.path.dirname(built_ext_path))}')
             print('Copying extension %s -> %s' % (
                 built_ext_path,
                 ext_full_path,

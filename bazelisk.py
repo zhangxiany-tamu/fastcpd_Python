@@ -58,7 +58,8 @@ BAZEL_GCS_PATH_PATTERN = (
     "https://storage.googleapis.com/bazel-builds/artifacts/{platform}/{commit}/bazel"
 )
 
-SUPPORTED_PLATFORMS = {"linux": "ubuntu1404", "windows": "windows", "darwin": "macos"}
+SUPPORTED_PLATFORMS = {"linux": "ubuntu1404",
+                       "windows": "windows", "darwin": "macos"}
 
 TOOLS_BAZEL_PATH = "./tools/bazel"
 
@@ -155,7 +156,8 @@ def get_releases_json(bazelisk_directory):
                     pass
 
     with open(releases, "wb") as f:
-        body = read_remote_text_file("https://api.github.com/repos/bazelbuild/bazel/releases")
+        body = read_remote_text_file(
+            "https://api.github.com/repos/bazelbuild/bazel/releases")
         f.write(body.encode("utf-8"))
         return json.loads(body)
 
@@ -202,7 +204,8 @@ def get_operating_system():
     if operating_system not in ("linux", "darwin", "windows"):
         raise Exception(
             'Unsupported operating system "{}". '
-            "Bazel currently only supports Linux, macOS and Windows.".format(operating_system)
+            "Bazel currently only supports Linux, macOS and Windows.".format(
+                operating_system)
         )
     return operating_system
 
@@ -219,7 +222,8 @@ def determine_bazel_filename(version):
     if machine not in supported_machines:
         raise Exception(
             'Unsupported machine architecture "{}". Bazel {} only supports {} on {}.'.format(
-                machine, version, ", ".join(supported_machines), operating_system.capitalize()
+                machine, version, ", ".join(
+                    supported_machines), operating_system.capitalize()
             )
         )
 
@@ -266,10 +270,12 @@ def normalized_machine_arch_name():
 
 def determine_url(version, is_commit, bazel_filename):
     if is_commit:
-        sys.stderr.write("Using unreleased version at commit {}\n".format(version))
+        sys.stderr.write(
+            "Using unreleased version at commit {}\n".format(version))
         # No need to validate the platform thanks to determine_bazel_filename().
         return BAZEL_GCS_PATH_PATTERN.format(
-            platform=SUPPORTED_PLATFORMS[platform.system().lower()], commit=version
+            platform=SUPPORTED_PLATFORMS[platform.system(
+            ).lower()], commit=version
         )
 
     # Split version into base version and optional additional identifier.
@@ -349,8 +355,10 @@ def download(url, destination_path):
         except Exception:
             pass
         if creds is not None:
-            auth = base64.b64encode(("%s:%s" % (creds[0], creds[2])).encode("ascii"))
-            request.add_header("Authorization", "Basic %s" % auth.decode("utf-8"))
+            auth = base64.b64encode(
+                ("%s:%s" % (creds[0], creds[2])).encode("ascii"))
+            request.add_header("Authorization", "Basic %s" %
+                               auth.decode("utf-8"))
     with closing(urlopen(request)) as response, open(destination_path, "wb") as file:
         shutil.copyfileobj(response, file)
 
@@ -378,10 +386,12 @@ def get_bazelisk_directory():
         if base_dir is None:
             base_dir = os.environ.get("HOME")
             if base_dir is None:
-                raise Exception("neither $XDG_CACHE_HOME nor $HOME are defined")
+                raise Exception(
+                    "neither $XDG_CACHE_HOME nor $HOME are defined")
             base_dir = os.path.join(base_dir, ".cache")
     else:
-        raise Exception("Unsupported operating system '{}'".format(operating_system))
+        raise Exception(
+            "Unsupported operating system '{}'".format(operating_system))
 
     return os.path.join(base_dir, "bazelisk")
 
@@ -447,7 +457,8 @@ def execute_bazel(bazel_path, argv):
     cmd = make_bazel_cmd(bazel_path, argv)
 
     # We cannot use close_fds on Windows, so disable it there.
-    p = subprocess.Popen([cmd["exec"]] + cmd["args"], close_fds=os.name != "nt", env=cmd["env"])
+    p = subprocess.Popen([cmd["exec"]] + cmd["args"],
+                         close_fds=os.name != "nt", env=cmd["env"])
     while True:
         try:
             return p.wait()
@@ -467,7 +478,8 @@ def get_bazel_path():
     )
 
     # TODO: Support other forks just like Go version
-    bazel_directory = os.path.join(bazelisk_directory, "downloads", BAZEL_UPSTREAM)
+    bazel_directory = os.path.join(
+        bazelisk_directory, "downloads", BAZEL_UPSTREAM)
     return download_bazel_into_directory(bazel_version, is_commit, bazel_directory)
 
 
