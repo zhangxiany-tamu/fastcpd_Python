@@ -46,27 +46,11 @@ jobs:
       - name: Install Dev Dependencies
         run: sudo apt install python3-dev libopenblas-dev liblapack-dev
 
-      # - name: Build the code
-      #   run: bazel build //... --subcommands
-
       - name: Setup venv
         run: make venv
 
-      # - uses: actions/cache@v3
-      #   with:
-      #     path: ~/.cache/pip
-      #     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements_lock.txt') }}
-      #     restore-keys: |
-      #       ${{ runner.os }}-pip-
-
       - name: Install requirements
         run: make install
-
-      # - uses: actions/cache/save@v3
-      #   id: cache-pip-linux
-      #   with:
-      #     path: ~/.cache/pip
-      #     key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements_lock.txt') }}
 
       - name: Install pip wheel
         run: make install_fastcpd
@@ -75,10 +59,7 @@ jobs:
         run: python -m pip install pdoc
 
       - name: Build Python documentation
-        run: pdoc --docformat google -o pdoc/python fastcpd --logo "https://fastcpd.xingchi.li/logo.svg" --math
-
-      # - name: Copy Python documentation
-      #   run: cp -r pdoc docs/python
+        run: pdoc --docformat google -o docs/python fastcpd --logo "https://fastcpd.xingchi.li/logo.svg" --math
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'
