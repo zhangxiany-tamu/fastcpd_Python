@@ -1,7 +1,8 @@
 global-exclude *
 
-graft fastcpd
+graft python
 graft bazel
+graft src
 
 include pyproject.toml
 include setup.py

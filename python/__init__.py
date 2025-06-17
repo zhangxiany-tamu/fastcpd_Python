@@ -1,7 +1,9 @@
 r"""
 # What is fastcpd?
 
-fastcpd is a Python package for fast change point detection in multivariate time series data. It provides efficient algorithms to identify points in time where the statistical properties of a sequence of observations change.
+fastcpd is a Python package for fast change point detection in multivariate
+time series data. It provides efficient algorithms to identify points in time
+where the statistical properties of a sequence of observations change.
 
 # Quickstart
 

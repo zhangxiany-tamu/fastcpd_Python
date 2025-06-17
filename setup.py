@@ -158,7 +158,7 @@ class BuildExtCommand(setuptools.command.build_ext.build_ext):
                 else:
                     suffix = '.so'
             fastcpd_lib_file = os.path.join(
-                "fastcpd",
+                "python",
                 f"{prefix}interface{suffix}")
             if not prebuilt_path:
                 # Ensure python_configure.bzl finds the correct Python verison.
@@ -190,7 +190,7 @@ class BuildExtCommand(setuptools.command.build_ext.build_ext):
                     'build',
                     '-c',
                     compilation_mode,
-                    '//fastcpd:pyfastcpd',
+                    '//python:pyfastcpd',
                     '--verbose_failures',
                 ] + build_options
                 if 'darwin' in sys.platform:
@@ -279,8 +279,8 @@ setuptools.setup(
         'fallback_version': '0.0.0',
     },
     packages=["fastcpd"],
-    package_dir={'fastcpd': 'fastcpd'},
-    ext_modules=[setuptools.Extension('fastcpd/interface', sources=[])],
+    package_dir={'fastcpd': 'python'},
+    ext_modules=[setuptools.Extension('fastcpd.interface', sources=[])],
     setup_requires=['setuptools_scm'],
     cmdclass={
         'build': BuildCommand,

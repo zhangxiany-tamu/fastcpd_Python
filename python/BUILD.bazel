@@ -1,16 +1,6 @@
 load("@rules_python//python:packaging.bzl", "py_package", "py_wheel")
 load("@rules_python//python:py_library.bzl", "py_library")
 
-cc_test(
-    name = "class_test",
-    size = "small",
-    srcs = ["class_test.cc"],
-    deps = [
-        "@googletest//:gtest",
-        "@googletest//:gtest_main",
-    ],
-)
-
 py_library(
     name = "fastcpd_init",
     srcs = [
@@ -41,7 +31,6 @@ py_package(
 
 py_wheel(
     name = "pyfastcpd",
-    # Package data. We're building "example_minimal_package-0.0.1-py3-none-any.whl"
     distribution = "fastcpd",
     python_tag = "py3",
     stamp = 0,
