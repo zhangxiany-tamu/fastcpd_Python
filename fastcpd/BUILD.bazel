@@ -1,21 +1,6 @@
 load("@rules_python//python:packaging.bzl", "py_package", "py_wheel")
 load("@rules_python//python:py_library.bzl", "py_library")
 
-cc_library(
-    name = "class",
-    srcs = ["class.cc"],
-    hdrs = ["class.h"],
-    copts = [
-        "-std=c++17",
-    ],
-    visibility = [
-        "//fastcpd/python/cpp:__pkg__",
-    ],
-    deps = [
-        "@armadillo_headers//:armadillo_header",
-    ],
-)
-
 cc_test(
     name = "class_test",
     size = "small",
@@ -85,7 +70,7 @@ cc_binary(
         "@platforms//os:windows": True,
     }),
     deps = [
-        ":class",
+        "//src:class",
         "@com_github_pybind_pybind11//:pybind11",
         "@local_config_python//:python_headers",
     ],

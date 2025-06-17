@@ -1,4 +1,4 @@
-#include "class.h"
+#include "src/fastcpd.h"
 
 #define PY_SSIZE_T_CLEAN
 #define CONFIG_64
@@ -61,11 +61,16 @@ std::vector<double> fastcpd_impl(
 
   fastcpd::classes::Fastcpd fastcpd_instance(
       /* beta */ beta,
+      /* cost_pelt */ nullptr,
+      /* cost_sen */ nullptr,
       /* cost_adjustment */ cost_adjustment,
+      /* cost_gradient */ nullptr,
+      /* cost_hessian */ nullptr,
       /* cp_only */ cp_only,
       /* data */ data_,
       /* epsilon */ epsilon,
       /* family */ family,
+      /* multiple_epochs_function */ nullptr,
       /* line_search */ line_search_,
       /* lower */ lower_,
       /* momentum_coef */ momentum_coef,
@@ -73,6 +78,7 @@ std::vector<double> fastcpd_impl(
       /* p */ p,
       /* p_response */ p_response,
       /* pruning_coef */ pruning_coef,
+      /* r_progress */ false,
       /* segment_count */ segment_count,
       /* trim */ trim,
       /* upper */ upper_,
