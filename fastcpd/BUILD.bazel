@@ -75,7 +75,7 @@ cc_binary(
     ],
     linkopts = select({
         "@platforms//os:osx": ["-undefined dynamic_lookup"],
-        "@platforms//os:linux": [],
+        "@platforms//os:linux": ["-lopenblas"],
         "@platforms//os:windows": [],
     }),
     linkshared = True,
