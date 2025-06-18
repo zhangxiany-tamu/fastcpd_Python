@@ -59,7 +59,7 @@ jobs:
         run: python -m pip install pdoc
 
       - name: Build Python documentation
-        run: pdoc -t pdoc --docformat google -o docs/python fastcpd --logo "https://fastcpd.xingchi.li/logo.svg" --math
+        run: pdoc -t pdoc --docformat google -o docs/python fastcpd !fastcpd.interface --logo "https://fastcpd.xingchi.li/logo.svg" --math
 
       - name: Deploy to GitHub pages 🚀
         if: github.event_name != 'pull_request'

@@ -1,5 +1,9 @@
 ## Updates since last CRAN release (0.16.2)
 
+### fastcpd 0.18.0
+
+*   Release wheel for Python on Linux and macOS.
+
 ### fastcpd 0.17.0
 
 *   Introduce Python version.
