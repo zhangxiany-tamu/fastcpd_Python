@@ -270,18 +270,9 @@ with open(os.path.join(os.path.dirname(__file__), 'README.md'), mode='r',
 
 setuptools.setup(
     name='fastcpd',
-    use_scm_version={
-        # It would be nice to include the commit hash in the version, but that
-        # can't be done in a PEP 440-compatible way.
-        'version_scheme': 'no-guess-dev',
-        # Test PyPI does not support local versions.
-        'local_scheme': 'no-local-version',
-        'fallback_version': '0.0.0',
-    },
     packages=["fastcpd"],
     package_dir={'fastcpd': 'python'},
     ext_modules=[setuptools.Extension('fastcpd.interface', sources=[])],
-    setup_requires=['setuptools_scm'],
     cmdclass={
         'build': BuildCommand,
         'build_py': BuildPyCommand,
