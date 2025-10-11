@@ -81,8 +81,8 @@ BUILD_TESTING = "OFF"
 [tool.cibuildwheel]
 build = "cp38-* cp39-* cp310-* cp311-* cp312-* cp313-*"
 skip = "*-musllinux_*"
-test-requires = "pytest numpy scipy"
-test-command = "pytest {package}/tests"
+test-requires = "pytest numpy scipy matplotlib statsmodels arch"
+test-command = "pytest {package}/tests --tb=short"
 
 [tool.cibuildwheel.macos]
 archs = ["x86_64", "arm64"]
@@ -90,7 +90,7 @@ environment = { MACOSX_DEPLOYMENT_TARGET = "10.15" }
 
 [tool.cibuildwheel.linux]
 archs = ["x86_64", "aarch64"]
-before-all = "yum install -y openblas-devel lapack-devel || apt-get update && apt-get install -y libopenblas-dev liblapack-dev"
+before-all = "yum install -y openblas-devel lapack-devel armadillo-devel || apt-get update && apt-get install -y libopenblas-dev liblapack-dev libarmadillo-dev"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
