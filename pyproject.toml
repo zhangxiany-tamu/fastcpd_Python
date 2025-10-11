@@ -87,7 +87,7 @@ test-command = "pytest {package}/tests --tb=short"
 [tool.cibuildwheel.macos]
 archs = ["x86_64", "arm64"]
 environment = { MACOSX_DEPLOYMENT_TARGET = "10.15" }
-before-all = "arch -x86_64 brew install openblas armadillo"
+before-all = "brew install openblas armadillo"
 
 [tool.cibuildwheel.linux]
 archs = ["x86_64", "aarch64"]
