@@ -32,6 +32,7 @@ pip install -e .
 
 **System Requirements:**
 - Python ≥ 3.8
+- **Supported Platforms**: Linux, macOS (Windows support is experimental)
 - C++17 compiler (for building from source)
 - Armadillo library (macOS: `brew install armadillo`, Ubuntu: `sudo apt-get install libarmadillo-dev`)
 
