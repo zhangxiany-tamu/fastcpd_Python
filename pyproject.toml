@@ -85,8 +85,8 @@ test-requires = "pytest numpy scipy matplotlib statsmodels arch"
 test-command = "pytest {package}/tests --tb=short"
 
 [tool.cibuildwheel.macos]
-archs = ["x86_64", "arm64"]
-environment = { MACOSX_DEPLOYMENT_TARGET = "10.15" }
+archs = ["arm64"]
+environment = { MACOSX_DEPLOYMENT_TARGET = "11.0" }
 before-all = "brew install openblas armadillo"
 
 [tool.cibuildwheel.linux]
