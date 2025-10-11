@@ -1,3 +1,0 @@
-exclusions: list(
-    "R/RcppExports.R"
-  )

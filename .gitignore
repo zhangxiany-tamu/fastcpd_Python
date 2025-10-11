@@ -1,102 +1,24 @@
-# git ignore list
+# fastcpd-python .gitignore
 
-# Compiled source #
-###################
-*.com
-*.class
-*.exe
-*.o
-*.so
-
-
-#MatLab#
-########
-*.asv
-*.mat
-*.dat
-*.mexa64
-*.mexw64
-*.mexw64.pdb
-*.mexmaci64
-
-# Visual studio stuff#
-######################
-
-# User-specific files
-*.sdf
-*.suo
-*.user
-*.sln.docstates
-
-# Build results
-[Dd]ebug/
-[Dd]ebugPublic/
-[Rr]elease/
-x64/
-build/
-bld/
-[Bb]in/
-[Oo]bj/
-
-
-# Packages #
-############
-# it's better to unpack these files and commit the raw source
-# git has its own built in compression methods
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-*.tar
-*.zip
-
-# Logs and databases #
-######################
-*.log
-*.sql
-*.sqlite
-
-# OS generated files #
-######################
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-
-# Temp files #
-##############
-.*~
-Thumbs.db
-
-.vscode
-
-# Bazel #
-#########
-bazel-*
-
-# IntelliJ #
-#########
-.idea
-.clwb
-
-
-# Byte-compiled / optimized / DLL files
+# ============================================================================
+# Python
+# ============================================================================
 __pycache__/
 *.py[cod]
 *$py.class
-
-# C extensions
 *.so
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
+*.dylib
+*.dll
+*.egg
+*.egg-info/
 dist/
+build/
+*.whl
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+_skbuild/
+develop-eggs/
 downloads/
 eggs/
 .eggs/
@@ -106,191 +28,262 @@ parts/
 sdist/
 var/
 wheels/
-share/python-wheels/
 *.egg-info/
 .installed.cfg
-*.egg
 MANIFEST
 
-# PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
-*.manifest
-*.spec
+# ============================================================================
+# Virtual Environments
+# ============================================================================
+venv/
+ENV/
+env/
+.venv
+.Python
 
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Unit test / coverage reports
-htmlcov/
+# ============================================================================
+# Testing
+# ============================================================================
+.pytest_cache/
 .tox/
-.nox/
 .coverage
 .coverage.*
-.cache
-nosetests.xml
 coverage.xml
 *.cover
-*.py,cover
 .hypothesis/
-.pytest_cache/
-cover/
+htmlcov/
+.nox/
+nosetests.xml
 
-# Translations
-*.mo
-*.pot
-
-# Django stuff:
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask stuff:
-instance/
-.webassets-cache
-
-# Scrapy stuff:
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-.pybuilder/
-target/
-
-# Jupyter Notebook
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# pyenv
-#   For a library or package, you might want to ignore these files since the code is
-#   intended to run in multiple environments; otherwise, check them in:
-# .python-version
-
-# pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
-#Pipfile.lock
-
-# poetry
-#   Similar to Pipfile.lock, it is generally recommended to include poetry.lock in version control.
-#   This is especially recommended for binary packages to ensure reproducibility, and is more
-#   commonly ignored for libraries.
-#   https://python-poetry.org/docs/basic-usage/#commit-your-poetrylock-file-to-version-control
-#poetry.lock
-
-# pdm
-#   Similar to Pipfile.lock, it is generally recommended to include pdm.lock in version control.
-#pdm.lock
-#   pdm stores project-wide configurations in .pdm.toml, but it is recommended to not include it
-#   in version control.
-#   https://pdm.fming.dev/#use-with-ide
-.pdm.toml
-
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow and github.com/pdm-project/pdm
-__pypackages__/
-
-# Celery stuff
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath parsed files
-*.sage.py
-
-# Environments
-.env
-.venv
-env/
-venv/
-venv-*/
-ENV/
-env.bak/
-venv.bak/
-
-# Spyder project settings
+# ============================================================================
+# IDEs and Editors
+# ============================================================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.project
+.pydevproject
+.settings/
 .spyderproject
 .spyproject
-
-# Rope project settings
 .ropeproject
 
-# mkdocs documentation
-/site
+# ============================================================================
+# OS Files
+# ============================================================================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
 
-# mypy
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+[Dd]esktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ============================================================================
+# MyPy
+# ============================================================================
 .mypy_cache/
 .dmypy.json
 dmypy.json
 
-# Pyre type checker
-.pyre/
+# ============================================================================
+# Jupyter Notebooks
+# ============================================================================
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+# Note: Don't ignore .ipynb files - we want to commit notebooks!
 
-# pytype static type analyzer
-.pytype/
+# ============================================================================
+# Sphinx Documentation
+# ============================================================================
+docs_sphinx/_build/
+docs_sphinx/_static/
+docs_sphinx/_templates/
 
-# Cython debug symbols
-cython_debug/
+# Keep docs/ folder for GitHub Pages
+# But ignore build artifacts
+docs/_build/
+docs/auto_examples/
 
-# Other
-tmp/
-docs-gen/
+# ============================================================================
+# C++ Build Artifacts
+# ============================================================================
+*.o
+*.a
+*.so
+*.dylib
+*.dll
+*.obj
+*.exe
+cmake_install.cmake
+CMakeFiles/
+CMakeCache.txt
+Makefile
+!docs_sphinx/Makefile
+!CMakeLists.txt
 
-########################################################################## R
-
-# History files
+# ============================================================================
+# R (for benchmarking/comparison)
+# ============================================================================
 .Rhistory
-.Rapp.history
-
-# Session Data files
 .RData
+.Rproj.user
+*.Rproj
 
-# User-specific files
-.Ruserdata
+# ============================================================================
+# Temporary Files
+# ============================================================================
+*.tmp
+*.temp
+*.log
+*.bak
+*.orig
+*.prof
 
-# Example code in package build process
-*-Ex.R
+# ============================================================================
+# Data Files (test outputs, large files)
+# ============================================================================
+*.h5
+*.hdf5
+*.pkl
+*.pickle
 
-# Output files from R CMD build
-/*.tar.gz
+# Benchmark temporary outputs
+benchmarks/*.csv
+benchmarks/*.json
+benchmarks/test_*.py
+benchmarks/test_*.R
+benchmarks/debug_*.py
+benchmarks/debug_*.R
+benchmarks/check_*.py
+benchmarks/check_*.R
+benchmarks/compare_*.py
+benchmarks/comprehensive_*.py
+benchmarks/comprehensive_*.R
+benchmarks/generate_*.R
+benchmarks/python_*.json
+benchmarks/r_*.json
+benchmarks/*_test_data_*.csv
 
-# Output files from R CMD check
-/*.Rcheck/
+# Keep important benchmark files
+!benchmarks/benchmark_*.py
+!benchmarks/BENCHMARK_*.txt
+!benchmarks/BENCHMARK_*.md
+!benchmarks/ACTUAL_*.txt
+!benchmarks/README.md
 
-# RStudio files
-.Rproj.user/
+# ============================================================================
+# Environment and Configuration
+# ============================================================================
+.env
+.env.local
+.venv
+env.bak/
+venv.bak/
+.python-version
 
-# produced vignettes
-vignettes/*.html
-vignettes/*.pdf
+# Pipenv
+Pipfile.lock
 
-# OAuth2 token, see https://github.com/hadley/httr/releases/tag/v0.3
-.httr-oauth
+# Poetry
+poetry.lock
 
-# knitr and R markdown default cache directories
-*_cache/
-/cache/
+# PEP 582
+__pypackages__/
 
-# Temporary files created by R markdown
-*.utf8.md
-*.knit.md
+# ============================================================================
+# Claude (AI assistant)
+# ============================================================================
+.claude/
 
-# R Environment Variables
-.Renviron
+# ============================================================================
+# Project-Specific
+# ============================================================================
+# Temporary test outputs
+test_output/
+benchmark_results/
 
-fastcpd.Rproj
-.DS_Store
-inst/doc
-vignettes/*.aux
-vignettes/comparison-packages-results.RData
-.vscode/
-pkgdown/favicon/
-CRAN-SUBMISSION
+# Local configuration (if any)
+local_config.py
+config.local.py
+secrets.yaml
+credentials.json
+.local/
+
+# Compiled translations
+*.mo
+*.pot
+
+# Profiling data
+*.prof
+
+# ============================================================================
+# Keep Important Files
+# ============================================================================
+# Explicitly ensure these are not ignored
+!.gitignore
+!README.md
+!LICENSE
+!pyproject.toml
+!requirements.txt
+!requirements.in
+!requirements_lock.txt
+!setup.py
+!CMakeLists.txt
+!build.sh
+!MANIFEST.in
+
+# ============================================================================
+# Internal Development Files (not for public release)
+# ============================================================================
+# Internal documentation and development notes
 docs/
+METRICS_DATASETS_DESIGN.md
+ROADMAP_TO_SURPASS_RUPTURES.md
+TESTING_SUMMARY.md
+TESTING_REPORT.md
+RELEASE_CHECKLIST.md
+FINAL_RELEASE_SUMMARY.md
+
+# Internal benchmarking and testing
+benchmarks/
+
+# Reference code from other projects
+reference_code/
+
+# Example output files (generated by running examples)
+*.png
+!docs/**/*.png
+!notebooks/**/*.png
+
+# Research papers and large files (host elsewhere)
+*.pdf
+
+# ============================================================================
+# Archives
+# ============================================================================
+# Keep archive folders but you can ignore their contents if needed
+# docs/archive/*
+# !docs/archive/.gitkeep
+# !docs/archive/*.md
+
+# ============================================================================
+# macOS Homebrew paths (system-wide, not project)
+# ============================================================================
+# Only ignore if accidentally added
+/opt/homebrew/
+/Users/*/anaconda3/

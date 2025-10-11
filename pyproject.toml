@@ -1,51 +1,124 @@
+[build-system]
+requires = ["scikit-build-core>=0.8", "nanobind>=2.0"]
+build-backend = "scikit_build_core.build"
+
 [project]
 name = "fastcpd"
-description="A Python package for performing fast change point detection."
-dynamic = ["version"]
-authors = [
-    {name="Xingchi Li", email="anthony.li.stat.tamu.edu@lixingchi.com"},
-    {name="Xianyang Zhang", email="zhangxiany@stat.tamu.edu"},
-]
-requires-python = ">=3.10"
+version = "0.18.0"
+description = "Fast change point detection using sequential gradient descent"
 readme = "README.md"
-
-maintainers = [
-    {name="Xingchi Li", email="anthony.li.stat.tamu.edu@lixingchi.com"},
+license = {text = "MIT"}
+authors = [
+    {name = "Xianyang Zhang", email = "zhangxiany@umich.edu"}
 ]
-
+requires-python = ">=3.8"
 classifiers = [
-    "Development Status :: 2 - Pre-Alpha",
+    "Development Status :: 4 - Beta",
     "Intended Audience :: Science/Research",
-    "Operating System :: MacOS :: MacOS X",
-    "Operating System :: Microsoft :: Windows",
-    "Operating System :: POSIX",
-    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: C++",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
-    "Programming Language :: R",
-    "Programming Language :: C++",
+    "Programming Language :: Python :: 3.13",
     "Topic :: Scientific/Engineering",
     "Topic :: Scientific/Engineering :: Mathematics",
-    "Topic :: Software Development :: Libraries",
+]
+dependencies = [
+    "numpy>=1.20",
+    "scikit-learn>=1.0",  # For GLM and LASSO models
 ]
 
-license = "GPL-3.0-or-later"
-license-files = ["LICEN[CS]E*"]
-
-
-[tool.setuptools.dynamic]
-version = {attr = "fastcpd.__version__"}
-
-
-[build-system]
-requires = [
-    "numpy>=2.0.3",
-    "build",
-    "pytest",
-    "setuptools",
+[project.optional-dependencies]
+numba = [
+    "numba>=0.56",
+]
+timeseries = [
+    "statsmodels>=0.13",
+    "arch>=5.3",
+]
+test = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "scipy>=1.7",
+]
+benchmark = [
+    "ruptures>=1.1",
+    "matplotlib>=3.5",
+    "pandas>=1.3",
+]
+dev = [
+    "fastcpd[test,benchmark]",
+    "black>=23.0",
+    "ruff>=0.1",
+    "mypy>=1.0",
 ]
 
 [project.urls]
-Documentation = "https://fastcpd.xingchi.li/"
-Repository = "https://github.com/doccstat/fastcpd"
+Homepage = "https://github.com/doccstat/fastcpd"
+Documentation = "https://fastcpd.readthedocs.io"
+Repository = "https://github.com/doccstat/fastcpd.git"
+Issues = "https://github.com/doccstat/fastcpd/issues"
+
+[tool.scikit-build]
+metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"
+sdist.include = ["src/*.cc", "src/*.h", "src/*.f", "src/*.f90"]
+wheel.packages = ["fastcpd"]
+cmake.version = ">=3.18"
+build.verbose = true
+build-dir = "build/{wheel_tag}"
+
+[tool.scikit-build.cmake.define]
+CMAKE_CXX_STANDARD = "17"
+BUILD_TESTING = "OFF"
+
+[tool.cibuildwheel]
+build = "cp38-* cp39-* cp310-* cp311-* cp312-* cp313-*"
+skip = "*-musllinux_*"
+test-requires = "pytest numpy scipy"
+test-command = "pytest {package}/tests"
+
+[tool.cibuildwheel.macos]
+archs = ["x86_64", "arm64"]
+environment = { MACOSX_DEPLOYMENT_TARGET = "10.15" }
+
+[tool.cibuildwheel.linux]
+archs = ["x86_64", "aarch64"]
+before-all = "yum install -y openblas-devel lapack-devel || apt-get update && apt-get install -y libopenblas-dev liblapack-dev"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+addopts = ["-ra", "--strict-markers", "--strict-config"]
+xfail_strict = true
+filterwarnings = ["error"]
+
+[tool.mypy]
+python_version = "3.8"
+warn_unused_configs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+strict_equality = true
+check_untyped_defs = true
+
+[tool.ruff]
+src = ["fastcpd"]
+line-length = 88
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W",  # pycodestyle, pyflakes
+    "I",            # isort
+    "UP",           # pyupgrade
+    "B",            # flake8-bugbear
+    "SIM",          # flake8-simplify
+    "NPY",          # numpy-specific rules
+]
+ignore = []
+
+[tool.black]
+line-length = 88
+target-version = ["py38", "py39", "py310", "py311", "py312"]

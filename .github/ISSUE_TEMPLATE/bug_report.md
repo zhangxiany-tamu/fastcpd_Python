@@ -1,39 +1,40 @@
 ---
-name: Bug report
-about: Submit a bug report to help us improve fastcpd
+name: Bug Report
+about: Report a bug to help us improve fastcpd
+title: '[BUG] '
+labels: bug
 ---
 
-### Tips for a helpful bug report:
+## Bug Description
 
-* Please include a **minimal reproducible example** to demonstrate the bug.
-  A reprex can be helpful. See
-  [make a reprex](https://www.tidyverse.org/help/#reprex).
-  Do not include session info unless it is explicitly asked for.
+A clear and concise description of the bug.
 
-* If you can, use a small toy dataset that exposes the bug. If for some reason,
-  the bug only occurs on your original data, try to limit the number of rows that
-  are necessary to expose the bug. Share such data by copying `dput()` output
-  rather than an external file.
+## To Reproduce
 
-* Unless the bug is about the theme, labels, scales or other plot decoration:
-  please omit these from the code.
+Steps to reproduce the behavior:
 
-* Please check whether somebody has reported the same problem in the
-  [issues](https://github.com/doccstat/fastcpd/issues).
+```python
+import numpy as np
+from fastcpd import fastcpd
 
-Delete these instructions once you have read them.
-
----
-
-I found a problem with ...
-
-I expected ...
-
-Here is the code to reproduce the bug:
-
-```r
-# copy your code to the clipboard and run:
-reprex::reprex()
+# Your code here that reproduces the bug
 ```
 
-<!-- Copy and modified based on https://github.com/tidyverse/ggplot2/tree/main/.github/ISSUE_TEMPLATE -->
+**Expected behavior:**
+A clear description of what you expected to happen.
+
+**Actual behavior:**
+What actually happened.
+
+## Environment
+
+- **fastcpd version:** (e.g., 0.18.0)
+- **Python version:** (e.g., 3.11.5)
+- **Operating System:** (e.g., macOS 14.0, Ubuntu 22.04, Windows 11)
+- **Installation method:** (pip, conda, from source)
+
+## Additional Context
+
+- Error messages or stack traces (if any)
+- Have you checked [existing issues](https://github.com/doccstat/fastcpd/issues)?
+- Any other relevant information

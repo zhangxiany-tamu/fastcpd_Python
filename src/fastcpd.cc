@@ -343,7 +343,13 @@ Fastcpd::Fastcpd(
       data_(data),
       data_c_([&]() -> mat {
         if (family == "mean") {
-          mat data_c = data * chol(inv(variance_estimate)).t();
+          mat data_c;
+          // If variance_estimate is empty, use identity (data as is)
+          if (variance_estimate.n_elem == 0) {
+            data_c = data;
+          } else {
+            data_c = data * chol(inv(variance_estimate)).t();
+          }
           data_c = cumsum(join_rows(data_c, sum(square(data_c), 1)));
           data_c = join_cols(zeros<rowvec>(data_c.n_cols), data_c);
           return data_c;

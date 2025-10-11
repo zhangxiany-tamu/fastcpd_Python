@@ -1,29 +1,35 @@
 ---
-name: "Feature Request"
-about: Suggest a change or new feature in fastcpd
+name: Feature Request
+about: Suggest a new feature or enhancement for fastcpd
+title: '[FEATURE] '
+labels: enhancement
 ---
 
-### Tips for a helpful feature request:
+## Feature Description
 
-* fastcpd is still under active development. Improvements to its current
-  functionality or to infrastructure are more than welcome.
+A clear and concise description of the feature you'd like to see.
 
-* Please motivate the need for change, if applicable with a
-  **minimal reproducible** example (reprex). If you've never heard of a reprex,
-  please read [make a reprex](https://www.tidyverse.org/help/#reprex). Do not
-  include session info unless it is explicitly asked for.
+## Motivation
 
-Delete this instructions once you've read them.
+Why is this feature needed? What problem does it solve?
 
----
+## Proposed Solution
 
-In situations when ...
+How would you like this feature to work?
 
-I would like to be able to ...
+```python
+# Example of how you envision using this feature
+from fastcpd import fastcpd
 
-```r
-# copy your code to the clipboard and run:
-reprex::reprex()
+# Your example code here
 ```
 
-<!-- Copy and modified based on https://github.com/tidyverse/ggplot2/tree/main/.github/ISSUE_TEMPLATE -->
+## Alternatives Considered
+
+Have you considered any alternative solutions or workarounds?
+
+## Additional Context
+
+- Is this feature related to a specific model family or use case?
+- Are there similar features in other libraries?
+- Any other relevant information
