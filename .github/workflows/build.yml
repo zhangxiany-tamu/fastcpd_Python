@@ -26,10 +26,7 @@ jobs:
       env:
         CIBW_BUILD: cp38-* cp39-* cp310-* cp311-* cp312-*
         CIBW_SKIP: "*-musllinux_*"
-        CIBW_BEFORE_ALL_LINUX: >
-          (sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-* || true) &&
-          (sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* || true) &&
-          (yum install -y openblas-devel lapack-devel armadillo-devel || apt-get update && apt-get install -y libopenblas-dev liblapack-dev libarmadillo-dev)
+        CIBW_BEFORE_ALL_LINUX: "(sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-* || true) && (sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* || true) && (yum install -y openblas-devel lapack-devel armadillo-devel || (apt-get update && apt-get install -y libopenblas-dev liblapack-dev libarmadillo-dev))"
         CIBW_BEFORE_ALL_MACOS: brew install armadillo
         CIBW_TEST_REQUIRES: pytest numpy scipy matplotlib statsmodels arch
         CIBW_TEST_COMMAND: pytest {package}/tests --tb=short

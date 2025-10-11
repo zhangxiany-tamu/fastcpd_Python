@@ -90,11 +90,7 @@ environment = { MACOSX_DEPLOYMENT_TARGET = "10.15" }
 
 [tool.cibuildwheel.linux]
 archs = ["x86_64", "aarch64"]
-before-all = """
-  (sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-* || true) &&
-  (sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* || true) &&
-  (yum install -y openblas-devel lapack-devel armadillo-devel || apt-get update && apt-get install -y libopenblas-dev liblapack-dev libarmadillo-dev)
-"""
+before-all = "(sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-* || true) && (sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* || true) && (yum install -y openblas-devel lapack-devel armadillo-devel || (apt-get update && apt-get install -y libopenblas-dev liblapack-dev libarmadillo-dev))"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
