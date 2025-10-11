@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.18...3.27)
 
-project(fastcpd LANGUAGES CXX C Fortran)
+project(fastcpd LANGUAGES CXX C)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -95,7 +95,7 @@ target_include_directories(_fastcpd_impl PRIVATE src)
 # Fix rpath for runtime library loading (especially OpenBLAS)
 if(APPLE)
   set_target_properties(_fastcpd_impl PROPERTIES
-    INSTALL_RPATH "@loader_path;/Users/xianyangzhang/anaconda3/lib;/opt/homebrew/lib"
+    INSTALL_RPATH "@loader_path;/opt/homebrew/lib;/usr/local/lib"
     BUILD_WITH_INSTALL_RPATH TRUE
   )
 endif()

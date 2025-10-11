@@ -25,8 +25,8 @@ pip install fastcpd
 pip install fastcpd[numba]
 
 # From source
-git clone https://github.com/doccstat/fastcpd.git
-cd fastcpd
+git clone https://github.com/zhangxiany-tamu/fastcpd_Python.git
+cd fastcpd_Python
 pip install -e .
 ```
 
@@ -36,6 +36,78 @@ pip install -e .
 - Armadillo library (macOS: `brew install armadillo`, Ubuntu: `sudo apt-get install libarmadillo-dev`)
 
 ## Quick Start
+
+### Mean Change Detection (Most Fundamental)
+
+Detect changes in the mean of a time series:
+
+```python
+import numpy as np
+from fastcpd.segmentation import mean
+
+# Generate data with mean changes at positions 100 and 200
+np.random.seed(42)
+data = np.concatenate([
+    np.random.normal(0, 1, 100),   # Mean = 0
+    np.random.normal(5, 1, 100),   # Mean = 5 (change at 100)
+    np.random.normal(2, 1, 100)    # Mean = 2 (change at 200)
+])
+
+# Detect change points
+result = mean(data, beta="MBIC")
+print(f"Detected change points: {result.cp_set}")
+# Output: [100, 200] - Perfect detection!
+```
+
+**Visualization:**
+
+![Mean Change Detection](docs/images/mean_change_example.png)
+
+```python
+import matplotlib.pyplot as plt
+
+plt.figure(figsize=(12, 4))
+plt.plot(data, alpha=0.7, linewidth=0.5)
+for cp in result.cp_set:
+    plt.axvline(x=cp, color='red', linestyle='--', linewidth=2)
+plt.title('Mean Change Detection')
+plt.xlabel('Time')
+plt.ylabel('Value')
+plt.show()
+```
+
+### Variance Change Detection
+
+Detect changes in variance/volatility:
+
+```python
+from fastcpd.segmentation import variance
+
+# Generate data with variance changes
+np.random.seed(42)
+data = np.concatenate([
+    np.random.normal(0, 1, 100),    # Std = 1
+    np.random.normal(0, 3, 100),    # Std = 3 (variance change at 100)
+    np.random.normal(0, 0.5, 100)   # Std = 0.5 (variance change at 200)
+])
+
+# Detect variance change points
+result = variance(data, beta="MBIC")
+print(f"Detected change points: {result.cp_set}")
+# Output: [100, 200] - Accurate detection!
+```
+
+![Variance Change Detection](docs/images/variance_change_example.png)
+
+### Combined Mean and Variance Changes
+
+```python
+from fastcpd.segmentation import meanvariance
+
+# Data with both mean and variance changes
+result = meanvariance(data, beta="MBIC")
+print(f"Detected change points: {result.cp_set}")
+```
 
 ### GLM Models (Binomial/Poisson)
 
@@ -108,28 +180,6 @@ print(result.cp_set)  # Works best with strong changes
 - ARMA uses vanilla PELT with statsmodels (pure Python). Achieves excellent accuracy (error ≤ 1-2).
 - GARCH uses vanilla PELT with arch package (pure Python). Best for strong volatility changes with beta≈2.0.
 
-### Core Models (Mean/Variance)
-
-```python
-from fastcpd.segmentation import mean, variance, meanvariance
-
-# Mean change detection
-data = np.concatenate([
-    np.random.normal(0, 1, 300),
-    np.random.normal(5, 1, 400)
-])
-result = mean(data)
-print(result.cp_set)  # [300]
-
-# Variance change detection
-data = np.concatenate([
-    np.random.normal(0, 1, 300),
-    np.random.normal(0, 3, 400)
-])
-result = variance(data)
-print(result.cp_set)  # [300]
-```
-
 ---
 
 ## Algorithm: vanilla_percentage Parameter
@@ -188,30 +238,22 @@ brew install armadillo
 sudo apt-get install libarmadillo-dev
 
 # Clone and install
-git clone https://github.com/doccstat/fastcpd.git
-cd fastcpd
+git clone https://github.com/zhangxiany-tamu/fastcpd_Python.git
+cd fastcpd_Python
 pip install -e .
 
 # Optional: Install Numba for 7-14x GLM speedup
 pip install numba
 ```
 
-## Citation
+## Related Projects
 
-If you use fastcpd in your research, please cite:
+**fastcpd Ecosystem:**
 
-```bibtex
-@inproceedings{zhang2023sequential,
-  title={Sequential Gradient Descent and Quasi-Newton's Method for Change-Point Analysis},
-  author={Zhang, Xianyang and Dawn, Trisha},
-  booktitle={Proceedings of AISTATS},
-  year={2023}
-}
-```
+- **R Version**: [fastcpd R package](https://github.com/doccstat/fastcpd) - The original R implementation with additional features
+- **Web Application**: [fastcpd Web App](https://github.com/zhangxiany-tamu/fastcpd_webapp) - Interactive web interface for change point detection
 
-## Contributing
-
-We welcome contributions! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+The Python version provides a fast, standalone implementation optimized for production use, while the R version offers additional research-oriented features. The web app provides an easy-to-use interface for both versions.
 
 ## License
 
@@ -219,6 +261,5 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Support
 
-- **Issues**: [GitHub Issues](https://github.com/doccstat/fastcpd/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/doccstat/fastcpd/discussions)
-- **Email**: zhangxiany@umich.edu
+- **Issues**: [GitHub Issues](https://github.com/zhangxiany-tamu/fastcpd_Python/issues)
+- **Email**: zhangxiany@stat.tamu.edu

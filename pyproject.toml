@@ -9,7 +9,7 @@ description = "Fast change point detection using sequential gradient descent"
 readme = "README.md"
 license = {text = "MIT"}
 authors = [
-    {name = "Xianyang Zhang", email = "zhangxiany@umich.edu"}
+    {name = "Xianyang Zhang", email = "zhangxiany@stat.tamu.edu"}
 ]
 requires-python = ">=3.8"
 classifiers = [
@@ -58,10 +58,10 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/doccstat/fastcpd"
+Homepage = "https://github.com/zhangxiany-tamu/fastcpd_Python"
 Documentation = "https://fastcpd.readthedocs.io"
-Repository = "https://github.com/doccstat/fastcpd.git"
-Issues = "https://github.com/doccstat/fastcpd/issues"
+Repository = "https://github.com/zhangxiany-tamu/fastcpd_Python.git"
+Issues = "https://github.com/zhangxiany-tamu/fastcpd_Python/issues"
 
 [tool.scikit-build]
 metadata.version.provider = "scikit_build_core.metadata.setuptools_scm"

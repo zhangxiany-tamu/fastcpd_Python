@@ -251,7 +251,8 @@ credentials.json
 # Internal Development Files (not for public release)
 # ============================================================================
 # Internal documentation and development notes
-docs/
+docs/*
+!docs/images/
 METRICS_DATASETS_DESIGN.md
 ROADMAP_TO_SURPASS_RUPTURES.md
 TESTING_SUMMARY.md

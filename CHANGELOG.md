@@ -70,4 +70,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-For detailed changes, see the [commit history](https://github.com/doccstat/fastcpd/commits/main).
+For detailed changes, see the [commit history](https://github.com/zhangxiany-tamu/fastcpd_Python/commits/main).

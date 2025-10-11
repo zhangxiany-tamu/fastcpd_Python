@@ -16,13 +16,13 @@ We welcome contributions of all kinds: bug reports, feature requests, documentat
 
 ## Code of Conduct
 
-This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Report issues to zhangxiany@umich.edu.
+This project adheres to a [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Report issues to zhangxiany@stat.tamu.edu.
 
 ## How Can I Contribute?
 
 ### Reporting Bugs
 
-Before creating a bug report, please check the [existing issues](https://github.com/doccstat/fastcpd/issues) to avoid duplicates.
+Before creating a bug report, please check the [existing issues](https://github.com/zhangxiany-tamu/fastcpd_Python/issues) to avoid duplicates.
 
 When you create a bug report, please include:
 - A clear and descriptive title
@@ -345,9 +345,9 @@ from fastcpd import fastcpd
 
 ## Getting Help
 
-- **Questions**: Use [GitHub Discussions](https://github.com/doccstat/fastcpd/discussions)
-- **Bugs**: Open an [issue](https://github.com/doccstat/fastcpd/issues)
-- **Email**: Contact maintainers at zhangxiany@umich.edu
+- **Questions**: Use [GitHub Discussions](https://github.com/zhangxiany-tamu/fastcpd_Python/discussions)
+- **Bugs**: Open an [issue](https://github.com/zhangxiany-tamu/fastcpd_Python/issues)
+- **Email**: Contact maintainers at zhangxiany@stat.tamu.edu
 
 ## Recognition
 
