@@ -251,9 +251,9 @@ pip install numba
 **fastcpd Ecosystem:**
 
 - **R Version**: [fastcpd R package](https://github.com/doccstat/fastcpd) - The original R implementation with additional features
-- **Web Application**: [fastcpd Web App](https://github.com/zhangxiany-tamu/fastcpd_webapp) - Interactive web interface for change point detection
+- **Web Application**: [fastcpd Web App](https://github.com/zhangxiany-tamu/fastcpd_webapp) - Interactive Shiny web interface based on the R version
 
-The Python version provides a fast, standalone implementation optimized for production use, while the R version offers additional research-oriented features. The web app provides an easy-to-use interface for both versions.
+The Python version provides a fast, standalone implementation optimized for production use, while the R version offers additional research-oriented features. The Shiny web app provides an easy-to-use graphical interface for the R implementation.
 
 ## License
 

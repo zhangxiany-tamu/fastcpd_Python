@@ -33,6 +33,13 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y libarmadillo-dev
 
+    - name: Install system dependencies (Windows)
+      if: runner.os == 'Windows'
+      run: |
+        vcpkg install armadillo:x64-windows
+        echo "CMAKE_TOOLCHAIN_FILE=C:/vcpkg/scripts/buildsystems/vcpkg.cmake" >> $ENV:GITHUB_ENV
+      shell: pwsh
+
     - name: Install Python dependencies
       run: |
         python -m pip install --upgrade pip
