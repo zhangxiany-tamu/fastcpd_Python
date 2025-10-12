@@ -2,8 +2,7 @@
 Example 2: Multi-Annotator Evaluation
 ======================================
 
-Demonstrates the UNIQUE covering metric for multiple annotators.
-This feature is NOT available in ruptures!
+Demonstrates the covering metric for multiple annotators.
 
 Use case: When multiple human annotators provide ground truth labels,
 we want to know how well the algorithm agrees with ALL of them, not just
@@ -185,9 +184,9 @@ print("=" * 70)
 print("KEY TAKEAWAYS")
 print("=" * 70)
 print()
-print("1. Covering Metric: Unique to fastcpd! Not in ruptures!")
-print("2. Measures how well algorithm agrees with EACH annotator")
-print("3. More informative than union-based evaluation")
+print("1. Covering Metric: Measures agreement with each annotator")
+print("2. More informative than union-based evaluation")
+print("3. Useful when annotators have different expertise")
 print("4. Reveals annotator-specific performance")
 print("5. Use add_annotation_noise() to simulate realistic scenarios")
 print()

@@ -6,19 +6,19 @@ fastcpd-python Documentation
 ``fastcpd-python`` is a comprehensive Python package for detecting change points in time series and sequential data. It combines speed, accuracy, and rich evaluation capabilities.
 
 .. note::
-   🎯 **Status**: Production ready for mean/variance/GLM models. More accurate than R for GLM (71% win rate).
+   🎯 **Status**: Production ready for mean/variance/GLM models.
 
 Key Features
 ------------
 
-✅ **Superior Evaluation**
-   - 7 comprehensive metrics (vs 5 in ruptures)
+✅ **Comprehensive Evaluation**
+   - 7 evaluation metrics
    - Multi-annotator support with covering metric
-   - Rich return values (dicts with 9+ fields)
+   - Rich return values (dicts with detailed breakdowns)
 
-✅ **Best-in-Class Datasets**
-   - 7 generators with rich metadata (SNR, R², AUC, etc.)
-   - Realistic multi-annotator simulation
+✅ **Rich Dataset Generation**
+   - 7 generators with metadata (SNR, R², AUC, etc.)
+   - Multi-annotator simulation
    - GLM, GARCH, ARMA support
 
 ✅ **Visualization**
@@ -26,10 +26,10 @@ Key Features
    - Automatic metric overlay
    - Multi-annotator visualization
 
-✅ **Speed & Accuracy**
-   - 1.4-14x faster than R for core models (mean/variance)
-   - 71% accuracy win rate vs R for GLM models
-   - Numba acceleration for 7-14x additional speedup
+✅ **Performance**
+   - Fast C++ implementation for core models
+   - Optional Numba acceleration for GLM models
+   - Hybrid PELT/SeGD algorithm
 
 ✅ **Multiple Models**
    - Mean, Variance, MeanVariance (C++, fastest)

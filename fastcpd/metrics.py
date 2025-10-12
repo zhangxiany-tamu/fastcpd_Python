@@ -1,15 +1,15 @@
 """Evaluation metrics for change point detection.
 
 This module provides comprehensive metrics for evaluating change point detection
-performance, going beyond basic accuracy measures to include:
+performance, including:
 
 - Point-based metrics (precision, recall, F-beta)
 - Distance-based metrics (Hausdorff, annotation error)
 - Segmentation-based metrics (Adjusted Rand Index, Hamming)
 - Advanced metrics (covering metric for multiple annotators)
 
-Better than ruptures with:
-- More detailed return values (dicts with breakdowns)
+Features:
+- Detailed return values (dicts with breakdowns)
 - Support for multiple ground truth annotators
 - Statistical significance testing capabilities
 - Enhanced versions of standard metrics

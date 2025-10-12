@@ -1,12 +1,12 @@
 """Synthetic data generation for change point detection.
 
 This module provides functions to generate synthetic time series data with
-various types of changes. Better than ruptures with:
+various types of changes, including:
 
-- Richer metadata (SNR, difficulty scores, true parameters)
-- More model types (GLM, LASSO, ARMA, GARCH)
+- Multiple model types (mean, variance, regression, GLM, LASSO, ARMA, GARCH)
+- Rich metadata (SNR, difficulty scores, true parameters)
 - Realistic parameter generation
-- Multiple change patterns
+- Multiple change patterns (jump, drift, coefficient changes)
 - Reproducible with seed control
 
 All functions return dictionaries with 'data', 'changepoints', and 'metadata'

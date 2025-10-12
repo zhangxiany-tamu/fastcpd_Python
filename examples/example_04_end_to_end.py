@@ -70,12 +70,11 @@ print("Visualization saved to: examples/workflow1_mean.png")
 print()
 
 # ============================================================================
-# Workflow 2: GLM Detection (UNIQUE!)
+# Workflow 2: GLM Detection
 # ============================================================================
 print("=" * 70)
-print("Workflow 2: GLM (Binomial) Detection 🌟")
+print("Workflow 2: GLM (Binomial) Detection")
 print("-" * 70)
-print("This is UNIQUE to fastcpd! Not available in ruptures!")
 print()
 
 # Step 1: Generate GLM data
@@ -143,12 +142,11 @@ print("Visualization saved to: examples/workflow2_glm.png")
 print()
 
 # ============================================================================
-# Workflow 3: GARCH Detection (UNIQUE!)
+# Workflow 3: GARCH Detection
 # ============================================================================
 print("=" * 70)
-print("Workflow 3: GARCH Volatility Detection 🌟")
+print("Workflow 3: GARCH Volatility Detection")
 print("-" * 70)
-print("This is UNIQUE to fastcpd! Not available in ruptures!")
 print()
 
 # Step 1: Generate GARCH data
@@ -225,9 +223,9 @@ print("=" * 70)
 print()
 
 results_summary = [
-    ("Mean Change", "Traditional", 3, len([cp for cp in pred_cps if any(abs(cp - t) <= 10 for t in data_dict['changepoints'])])),
-    ("GLM (Binomial)", "UNIQUE 🌟", 2, 2),  # From workflow 2
-    ("GARCH", "UNIQUE 🌟", 2, 2)  # From workflow 3
+    ("Mean Change", "Core Model", 3, len([cp for cp in pred_cps if any(abs(cp - t) <= 10 for t in data_dict['changepoints'])])),
+    ("GLM (Binomial)", "GLM Model", 2, 2),  # From workflow 2
+    ("GARCH", "Time Series", 2, 2)  # From workflow 3
 ]
 
 print(f"{'Model':<20} {'Status':<15} {'True CPs':<10} {'Detected':<10} {'Result'}")
@@ -250,9 +248,9 @@ print("  2. Apply fastcpd detection algorithm")
 print("  3. Evaluate with comprehensive metrics")
 print("  4. Visualize results")
 print()
-print("Unique Capabilities:")
-print("  🌟 GLM detection (binomial/poisson) - Not in ruptures!")
-print("  🌟 GARCH volatility detection - Not in ruptures!")
+print("Capabilities:")
+print("  ✅ GLM detection (binomial/poisson)")
+print("  ✅ GARCH volatility detection")
 print("  ✅ Rich metadata for analysis")
 print("  ✅ Comprehensive evaluation metrics")
 print()

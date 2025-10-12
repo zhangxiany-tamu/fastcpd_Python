@@ -3,7 +3,7 @@ Example 3: Synthetic Dataset Generation
 ========================================
 
 Demonstrates comprehensive dataset generation for benchmarking and testing.
-Includes UNIQUE GLM and GARCH datasets not available in ruptures!
+Includes GLM and GARCH datasets for various change point scenarios.
 """
 
 import numpy as np
@@ -126,11 +126,10 @@ for i, params in enumerate(data_dict['true_params']):
 print()
 
 # ============================================================================
-# Dataset 5: GLM Change (UNIQUE! Not in ruptures!)
+# Dataset 5: GLM Change
 # ============================================================================
 print("Dataset 5: GLM with Coefficient Changes (BINOMIAL)")
 print("-" * 70)
-print("🌟 UNIQUE to fastcpd! Not available in ruptures!")
 print()
 
 data_dict = make_glm_change(
@@ -165,11 +164,10 @@ print(f"Response range:          [{data_dict_poisson['y'].min()}, {data_dict_poi
 print()
 
 # ============================================================================
-# Dataset 6: GARCH Change (UNIQUE! Not in ruptures!)
+# Dataset 6: GARCH Change
 # ============================================================================
 print("Dataset 6: GARCH Volatility Regime Changes")
 print("-" * 70)
-print("🌟 UNIQUE to fastcpd! Not available in ruptures!")
 print()
 
 data_dict = make_garch_change(
@@ -250,7 +248,7 @@ data_dict = make_glm_change(n_samples=300, n_changepoints=2, family='binomial', 
 axes[2, 0].scatter(range(len(data_dict['y'])), data_dict['y'], s=5, alpha=0.5)
 for cp in data_dict['changepoints']:
     axes[2, 0].axvline(cp, color='red', linestyle='--', linewidth=2)
-axes[2, 0].set_title('GLM (Binomial) 🌟')
+axes[2, 0].set_title('GLM (Binomial)')
 axes[2, 0].set_ylabel('Response')
 axes[2, 0].set_xlabel('Sample')
 axes[2, 0].grid(True, alpha=0.3)
@@ -261,7 +259,7 @@ axes[2, 1].plot(data_dict['data'], linewidth=0.8, alpha=0.7, label='Returns')
 axes[2, 1].plot(data_dict['volatility'], linewidth=1.5, alpha=0.8, color='orange', label='Volatility')
 for cp in data_dict['changepoints']:
     axes[2, 1].axvline(cp, color='red', linestyle='--', linewidth=2)
-axes[2, 1].set_title('GARCH (Volatility) 🌟')
+axes[2, 1].set_title('GARCH (Volatility)')
 axes[2, 1].set_ylabel('Value')
 axes[2, 1].set_xlabel('Sample')
 axes[2, 1].legend()
@@ -281,17 +279,15 @@ print("=" * 70)
 print()
 print("1. All datasets return rich metadata (SNR, R², AUC, kurtosis, etc.)")
 print("2. Reproducible with seed parameter")
-print("3. GLM datasets: UNIQUE to fastcpd! 🌟")
-print("4. GARCH datasets: UNIQUE to fastcpd! 🌟")
+print("3. GLM datasets: Binomial and Poisson regression")
+print("4. GARCH datasets: Volatility regime changes")
 print("5. Perfect for benchmarking and testing algorithms")
 print()
-print("Dataset Comparison:")
-print("  fastcpd:  7 generators (mean, variance, regression, ARMA, GLM, GARCH, +multi-annotator)")
-print("  ruptures: 4 generators (constant, linear, normal, wavy)")
-print()
-print("Unique Features:")
-print("  ✅ GLM data generation (binomial, poisson)")
-print("  ✅ GARCH volatility regimes")
+print("Available Generators:")
+print("  • Mean, variance, and combined mean-variance changes")
+print("  • Regression: Linear and LASSO")
+print("  • GLM: Binomial and Poisson")
+print("  • Time series: ARMA and GARCH")
 print("  ✅ Rich metadata (SNR, R², stationarity, etc.)")
 print("  ✅ Custom coefficient changes (random, sign_flip, magnitude)")
 print("  ✅ Correlation control for covariates")
