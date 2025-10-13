@@ -6,7 +6,7 @@ matching the R implementation in SeGD-Lasso.R.
 
 import numpy as np
 from typing import List, Tuple, Union
-from sklearn.linear_model import LassoCV
+from sklearn.linear_model import LassoCV, Lasso
 from fastcpd.sen_glm import SENLASSO, SENState
 
 
@@ -37,8 +37,10 @@ def _fastcpd_lasso_sen(
     n, n_cols = data.shape
     p = n_cols - 1  # Number of features
 
-    X = data[:, :p]
-    y = data[:, p]
+    # Data format: first column is response, rest are features
+    # This matches R's fastcpd.lasso which takes data[, 1] as y
+    y = data[:, 0]
+    X = data[:, 1:]
 
     # Calculate beta if string
     if isinstance(beta, str):
@@ -84,11 +86,9 @@ def _fastcpd_lasso_sen(
     err_sd_mean = np.mean(err_sd)
     act_num_mean = np.mean(act_num)
 
-    # CRITICAL: Adjust beta like R (line 140)
-    beta_adjusted = (act_num_mean + 1) * beta_val
-
-    print(f"LASSO pre-segmentation: err_sd_mean={err_sd_mean:.4f}, act_num_mean={act_num_mean:.1f}")
-    print(f"Beta adjustment: {beta_val:.4f} -> {beta_adjusted:.4f} (multiplier={act_num_mean+1:.2f})")
+    # CRITICAL: R adjusts beta for LASSO (fastcpd.cc line 977)
+    # beta_ = beta_ * (1 + mean(active_coefficients_count_))
+    beta_adjusted = beta_val * (1 + act_num_mean)
 
     # Run PELT/SEN algorithm
     change_points_raw = _pelt_lasso(
@@ -110,6 +110,89 @@ def _fastcpd_lasso_sen(
     }
 
 
+def _pelt_lasso_pure(
+    X: np.ndarray,
+    y: np.ndarray,
+    beta: float,
+    err_sd_mean: float,
+    p: int
+) -> List[int]:
+    """Pure PELT for LASSO with full optimization at each step.
+
+    Matches R's GetNllPeltLasso (fastcpd.cc lines 1836-1861).
+    Uses sklearn's Lasso like R uses glmnet.
+    """
+    n = X.shape[0]
+
+    # Calculate lambda base (matching R line 975)
+    lambda_base = err_sd_mean * np.sqrt(2 * np.log(p))
+
+    # Initialize
+    F = np.full(n + 1, np.inf)
+    F[0] = -beta
+    R = np.zeros(n + 1, dtype=int)
+    cp_list = [0]
+
+    # Main PELT loop
+    for t in range(1, n):
+        m = len(cp_list)
+        cval = np.full(m, np.nan)
+
+        # Compute cost for each candidate segment
+        for i in range(m):
+            tau = cp_list[i]
+            segment_length = t - tau + 1
+
+            # Only compute if segment is long enough (R requires >= 3 for LASSO)
+            if segment_length >= 3:
+                # Extract segment
+                X_seg = X[tau:t+1]
+                y_seg = y[tau:t+1]
+
+                # Calculate lambda for this segment (R line 1845-1846)
+                lambda_val = lambda_base / np.sqrt(segment_length)
+
+                # Fit LASSO with fixed lambda (matching R's glmnet call)
+                try:
+                    lasso = Lasso(alpha=lambda_val, fit_intercept=False, max_iter=10000)
+                    lasso.fit(X_seg, y_seg)
+                    coef = lasso.coef_
+
+                    # Compute deviance / 2 (R line 1854-1860)
+                    residuals = y_seg - X_seg @ coef
+                    deviance = np.sum(residuals ** 2)
+                    cval[i] = deviance / 2
+                except:
+                    cval[i] = np.inf
+            else:
+                cval[i] = 0
+
+        # Find minimum
+        obj = cval + F[np.array(cp_list)] + beta
+        min_idx = np.argmin(obj)
+        min_val = obj[min_idx]
+        F[t + 1] = min_val
+        R[t + 1] = cp_list[min_idx]
+
+        # Pruning
+        ind2 = (cval + F[np.array(cp_list)]) <= min_val
+        cp_list = [cp for i, cp in enumerate(cp_list) if ind2[i]]
+
+        # Add new candidate
+        cp_list.append(t)
+
+    # Backtrack
+    cp = []
+    curr = n
+    while curr > 0:
+        prev = R[curr]
+        if prev > 0:
+            cp.append(prev)
+        curr = prev
+
+    return sorted(cp)
+
+
 def _pelt_lasso(
     X: np.ndarray,
     y: np.ndarray,
@@ -127,6 +210,11 @@ def _pelt_lasso(
     Matches R's CP() main loop (lines 149-193).
     """
     n = X.shape[0]
+
+    # If vanilla_percentage = 1.0, use pure PELT with full optimization
+    # (matching R's GetNllPeltLasso in fastcpd.cc lines 1836-1861)
+    if vanilla_percentage >= 1.0:
+        return _pelt_lasso_pure(X, y, beta, err_sd_mean, p)
 
     # Initialize
     F = np.full(n + 1, np.inf)
@@ -194,7 +282,8 @@ def _pelt_lasso(
             sen_cmatrices[i] = cmatrix_new
 
             # Compute cost (R line 166)
-            if segment_length >= 2:
+            # R requires segment_length >= 3 for LASSO (fastcpd.cc line 1106)
+            if segment_length >= 3:
                 theta_avg = cum_coef_new / segment_length
                 cval[i] = _neg_log_lik_lasso(
                     X[k:t+1], y[k:t+1], theta_avg, lambda_val

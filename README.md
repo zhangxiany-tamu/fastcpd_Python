@@ -2,7 +2,6 @@
 
 **Fast change point detection in Python using PELT/SeGD algorithms**
 
-[![PyPI version](https://badge.fury.io/py/fastcpd.svg)](https://pypi.org/project/fastcpd/)
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
@@ -17,17 +16,18 @@
 
 ## Installation
 
+**Note**: This package is not yet available on PyPI. Install from source:
+
 ```bash
-# From PyPI (recommended)
-pip install fastcpd
-
-# With optional Numba acceleration (7-14x faster for GLM)
-pip install fastcpd[numba]
-
-# From source
+# Clone repository
 git clone https://github.com/zhangxiany-tamu/fastcpd_Python.git
 cd fastcpd_Python
+
+# Install with editable mode
 pip install -e .
+
+# Optional: Install Numba for 7-14x GLM speedup
+pip install numba
 ```
 
 **System Requirements:**
