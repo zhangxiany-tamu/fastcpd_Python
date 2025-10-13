@@ -105,8 +105,9 @@ endif()
 
 if(UNIX AND NOT APPLE)
   # Ensure the wheel's bundled libs can be found at runtime on Linux
+  # auditwheel places vendored libs under .libs next to the extension
   set_target_properties(_fastcpd_impl PROPERTIES
-    INSTALL_RPATH "$ORIGIN"
+    INSTALL_RPATH "$ORIGIN:$ORIGIN/.libs"
     BUILD_WITH_INSTALL_RPATH TRUE
   )
 endif()
