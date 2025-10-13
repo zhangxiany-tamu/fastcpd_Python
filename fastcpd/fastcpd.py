@@ -3,21 +3,17 @@
 from typing import Callable, Optional, Union
 import numpy as np
 from dataclasses import dataclass
-import importlib.util
+
+# Try to import C++ extension
+_fastcpd_impl = None
+_import_error = None
 
 try:
-    # Import C++ extension using importlib to avoid circular import
-    _fastcpd_impl_spec = importlib.util.find_spec("fastcpd._fastcpd_impl")
-    if _fastcpd_impl_spec is not None:
-        _fastcpd_impl = importlib.import_module("fastcpd._fastcpd_impl")
-    else:
-        _fastcpd_impl = None
-        _import_error = "Module 'fastcpd._fastcpd_impl' not found"
-except ImportError as e:
-    _fastcpd_impl = None  # Will use pure Python implementation
-    _import_error = str(e)  # Store error for debugging
+    # Use absolute import with __package__ to avoid circular import issues
+    import fastcpd._fastcpd_impl as _fastcpd_impl
+except (ImportError, ModuleNotFoundError) as e:
+    _import_error = str(e)
 except Exception as e:
-    _fastcpd_impl = None
     _import_error = f"Unexpected error: {str(e)}"
 
 from fastcpd.pelt_sklearn import _fastcpd_sklearn
