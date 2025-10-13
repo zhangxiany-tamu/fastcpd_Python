@@ -36,7 +36,7 @@ jobs:
         CIBW_BEFORE_ALL_LINUX: "(sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-* || true) && (sed -i 's|^#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* || true) && (yum install -y openblas-devel lapack-devel armadillo-devel || (apt-get update && apt-get install -y libopenblas-dev liblapack-dev libarmadillo-dev))"
         CIBW_BEFORE_ALL_MACOS: brew install openblas armadillo
         CIBW_TEST_REQUIRES: pytest numpy scipy matplotlib statsmodels arch
-        CIBW_TEST_COMMAND: pytest {package}/fastcpd/tests --tb=short
+        CIBW_TEST_COMMAND: python -c "import fastcpd, os; print('fastcpd at', fastcpd.__file__); print('contents:', os.listdir(os.path.dirname(fastcpd.__file__))); import fastcpd._fastcpd_impl; print('extension import OK')" && pytest --pyargs fastcpd.tests --tb=short
 
     - uses: actions/upload-artifact@v4
       with:
