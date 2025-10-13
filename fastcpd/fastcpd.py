@@ -3,8 +3,16 @@
 from typing import Callable, Optional, Union
 import numpy as np
 from dataclasses import dataclass
+import importlib.util
+
 try:
-    from . import _fastcpd_impl
+    # Import C++ extension using importlib to avoid circular import
+    _fastcpd_impl_spec = importlib.util.find_spec("fastcpd._fastcpd_impl")
+    if _fastcpd_impl_spec is not None:
+        _fastcpd_impl = importlib.import_module("fastcpd._fastcpd_impl")
+    else:
+        _fastcpd_impl = None
+        _import_error = "Module 'fastcpd._fastcpd_impl' not found"
 except ImportError as e:
     _fastcpd_impl = None  # Will use pure Python implementation
     _import_error = str(e)  # Store error for debugging
