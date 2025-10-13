@@ -8,9 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Find required packages
-# Development.SABIModule is optional for STABLE_ABI support
-find_package(Python COMPONENTS Interpreter Development.Module REQUIRED
-  OPTIONAL_COMPONENTS Development.SABIModule)
+find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
 
 # Execute nanobind's CMake helper
 execute_process(
@@ -81,9 +79,10 @@ set(FORTRAN_SOURCES
 )
 
 # Create Python extension module
+# Temporarily remove STABLE_ABI to debug wheel packaging issues
 nanobind_add_module(
   _fastcpd_impl
-  STABLE_ABI
+  # STABLE_ABI
   NB_STATIC
   ${FASTCPD_SOURCES}
   ${FORTRAN_SOURCES}
