@@ -118,6 +118,5 @@ endif()
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # Install the extension module
-# Match the pattern from nanobind_example for reliable wheel packaging
-# Use LIBRARY keyword even though nanobind creates MODULE targets
-install(TARGETS _fastcpd_impl LIBRARY DESTINATION fastcpd)
+# Install relative to CMAKE_INSTALL_PREFIX (controlled by wheel.install-dir in pyproject.toml)
+install(TARGETS _fastcpd_impl LIBRARY DESTINATION .)
