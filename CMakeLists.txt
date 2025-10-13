@@ -8,7 +8,9 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Find required packages
-find_package(Python COMPONENTS Interpreter Development.Module REQUIRED)
+# Development.SABIModule is optional for STABLE_ABI support
+find_package(Python COMPONENTS Interpreter Development.Module REQUIRED
+  OPTIONAL_COMPONENTS Development.SABIModule)
 
 # Execute nanobind's CMake helper
 execute_process(
@@ -116,10 +118,6 @@ endif()
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # Install the extension module
-# scikit-build-core handles the install location based on wheel.packages setting
-# nanobind creates MODULE libraries for Python extensions
-install(
-  TARGETS _fastcpd_impl
-  COMPONENT python_modules
-  DESTINATION ${SKBUILD_PROJECT_NAME}
-)
+# Match the pattern from nanobind_example for reliable wheel packaging
+# Use LIBRARY keyword even though nanobind creates MODULE targets
+install(TARGETS _fastcpd_impl LIBRARY DESTINATION fastcpd)
