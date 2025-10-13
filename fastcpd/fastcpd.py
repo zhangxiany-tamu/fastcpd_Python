@@ -4,7 +4,7 @@ from typing import Callable, Optional, Union
 import numpy as np
 from dataclasses import dataclass
 try:
-    from fastcpd import _fastcpd_impl
+    from . import _fastcpd_impl
 except ImportError as e:
     _fastcpd_impl = None  # Will use pure Python implementation
     _import_error = str(e)  # Store error for debugging
