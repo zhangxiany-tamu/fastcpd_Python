@@ -5,8 +5,12 @@ import numpy as np
 from dataclasses import dataclass
 try:
     from fastcpd import _fastcpd_impl
-except ImportError:
+except ImportError as e:
     _fastcpd_impl = None  # Will use pure Python implementation
+    _import_error = str(e)  # Store error for debugging
+except Exception as e:
+    _fastcpd_impl = None
+    _import_error = f"Unexpected error: {str(e)}"
 
 from fastcpd.pelt_sklearn import _fastcpd_sklearn
 
@@ -350,6 +354,15 @@ def fastcpd(
     # Make data C-contiguous
     data = np.ascontiguousarray(data)
     variance_estimate = np.ascontiguousarray(variance_estimate)
+
+    # Check if C++ extension is available
+    if _fastcpd_impl is None:
+        error_details = f" Import error: {_import_error}" if '_import_error' in globals() else ""
+        raise ImportError(
+            f"C++ extension '_fastcpd_impl' is not available, which is required for family='{family}'. "
+            f"This usually means the package was not properly installed.{error_details} "
+            "Try reinstalling with: pip install --force-reinstall fastcpd"
+        )
 
     # Call C++ implementation
     result = _fastcpd_impl.fastcpd_impl(
