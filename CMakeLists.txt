@@ -115,5 +115,12 @@ endif()
 # Help auditwheel/auditing tools discover and fix up linked libs on Linux
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-# Install the extension module
-install(TARGETS _fastcpd_impl LIBRARY DESTINATION fastcpd)
+# Install the extension module using scikit-build-core convention
+# For Python extension modules, we need to handle different platforms:
+# - Linux/macOS: .so files use LIBRARY
+# - Windows: .pyd files use RUNTIME
+install(
+  TARGETS _fastcpd_impl
+  LIBRARY DESTINATION ${SKBUILD_PLATLIB_DIR}/fastcpd
+  RUNTIME DESTINATION ${SKBUILD_PLATLIB_DIR}/fastcpd
+)
