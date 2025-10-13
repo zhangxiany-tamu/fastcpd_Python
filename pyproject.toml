@@ -73,6 +73,12 @@ wheel.packages = ["fastcpd"]
 cmake.version = ">=3.18"
 build.verbose = true
 build-dir = "build/{wheel_tag}"
+sdist.exclude = [
+    "fastcpd/_fastcpd_impl.*",
+]
+wheel.exclude = [
+    "fastcpd/_fastcpd_impl.*",
+]
 
 [tool.scikit-build.cmake.define]
 CMAKE_CXX_STANDARD = "17"

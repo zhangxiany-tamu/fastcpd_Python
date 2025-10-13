@@ -34,12 +34,16 @@ include_directories(${ARMADILLO_INCLUDE_DIRS})
 find_package(BLAS REQUIRED)
 find_package(LAPACK REQUIRED)
 
-# Define NO_RCPP to compile without R dependencies
-add_compile_definitions(NO_RCPP)
+# Define compile-time options
+# - NO_RCPP: compile without any R dependencies
+# - ARMA_DONT_USE_WRAPPER: use Armadillo in header-only mode (no libarmadillo linkage)
+# - ARMA_USE_BLAS/LAPACK: enable BLAS/LAPACK calls directly
+add_compile_definitions(NO_RCPP ARMA_DONT_USE_WRAPPER ARMA_USE_BLAS ARMA_USE_LAPACK)
 
 # Compiler flags for optimization
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-  add_compile_options(-O3 -march=native -Wall -Wextra)
+  # Avoid -march=native to produce portable wheels (manylinux compatible)
+  add_compile_options(-O3 -Wall -Wextra)
   # OpenMP is optional - disable on Apple Clang due to compatibility issues
   if(NOT APPLE OR NOT CMAKE_CXX_COMPILER_ID MATCHES "AppleClang")
     find_package(OpenMP)
@@ -83,9 +87,8 @@ nanobind_add_module(
   ${FORTRAN_SOURCES}
 )
 
-# Link libraries
+# Link libraries (link directly against BLAS/LAPACK; avoid libarmadillo to keep portability)
 target_link_libraries(_fastcpd_impl PRIVATE
-  ${ARMADILLO_LIBRARIES}
   ${BLAS_LIBRARIES}
   ${LAPACK_LIBRARIES}
 )
@@ -99,6 +102,9 @@ if(APPLE)
     BUILD_WITH_INSTALL_RPATH TRUE
   )
 endif()
+
+# Help auditwheel/auditing tools discover and fix up linked libs on Linux
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # Install the extension module
 install(TARGETS _fastcpd_impl LIBRARY DESTINATION fastcpd)
