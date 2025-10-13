@@ -81,8 +81,8 @@ BUILD_TESTING = "OFF"
 build = "cp38-* cp39-* cp310-* cp311-* cp312-* cp313-*"
 skip = "*-musllinux_*"
 test-requires = "pytest numpy scipy matplotlib statsmodels arch"
-# Run tests against the INSTALLED wheel, not the source tree
-test-command = "pytest --pyargs fastcpd.tests --tb=short"
+# Run tests against the INSTALLED wheel, and verify extension import first
+test-command = "python -c \"import fastcpd, os; print('fastcpd at', fastcpd.__file__); print('contents:', os.listdir(os.path.dirname(fastcpd.__file__))); import fastcpd._fastcpd_impl; print('extension import OK')\" && pytest --pyargs fastcpd.tests --tb=short"
 
 [tool.cibuildwheel.macos]
 archs = ["x86_64", "arm64"]
