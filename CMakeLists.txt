@@ -117,11 +117,9 @@ set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # Install the extension module
 # scikit-build-core handles the install location based on wheel.packages setting
-# For Python extension modules, we need to handle different platforms:
-# - Linux/macOS: .so files use LIBRARY
-# - Windows: .pyd files use RUNTIME
+# nanobind creates MODULE libraries for Python extensions
 install(
   TARGETS _fastcpd_impl
-  LIBRARY DESTINATION ${SKBUILD_PROJECT_NAME}
-  RUNTIME DESTINATION ${SKBUILD_PROJECT_NAME}
+  COMPONENT python_modules
+  DESTINATION ${SKBUILD_PROJECT_NAME}
 )
