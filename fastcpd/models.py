@@ -123,8 +123,10 @@ def fit_poisson_regression(
     # NLL = D / 2 (to match R's fastglm implementation)
     epsilon = 1e-15
     y_pred = np.maximum(y_pred, epsilon)
+    # Avoid log(0) by only computing for y > 0
+    y_safe = np.where(y > 0, y, 1)  # Replace 0 with 1 to avoid log(0)
     deviance = 2 * np.sum(
-        np.where(y > 0, y * np.log(y / y_pred), 0) - (y - y_pred)
+        np.where(y > 0, y * np.log(y_safe / y_pred), 0) - (y - y_pred)
     )
     nll = deviance / 2  # Negative log-likelihood (matches R)
 
