@@ -42,7 +42,7 @@ print()
 
 # Step 2: Detect change points
 print("Step 2: Detect change points with fastcpd")
-result = fastcpd(data, family='mean', beta=2.0)
+result = fastcpd(data, family='mean', beta='MBIC')
 pred_cps = result.cp_set.tolist()
 print(f"  Detected change points: {pred_cps}")
 print()
@@ -97,7 +97,7 @@ print()
 
 # Step 2: Detect change points
 print("Step 2: Detect change points with fastcpd (binomial family)")
-result = fastcpd(data, family='binomial', beta=3.0)
+result = fastcpd(data, family='binomial', beta='MBIC')
 pred_cps = result.cp_set.tolist()
 print(f"  Detected change points: {pred_cps}")
 print()
@@ -168,7 +168,7 @@ print()
 
 # Step 2: Detect change points
 print("Step 2: Detect change points with fastcpd (GARCH family)")
-result = fastcpd(data, family='garch', order=[1, 1], beta=2.0)
+result = fastcpd(data, family='garch', order=[1, 1], beta='MBIC')
 pred_cps = result.cp_set.tolist()
 print(f"  Detected change points: {pred_cps}")
 print()

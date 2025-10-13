@@ -236,7 +236,7 @@ print(f"  Avg volatility: {[f'{v:.3f}' for v in data_dict['metadata']['avg_volat
 print()
 
 # Detect (GARCH uses vanilla PELT)
-result = fastcpd(data_dict['data'], family='garch', order=[1, 1], beta=2.0)
+result = fastcpd(data_dict['data'], family='garch', order=[1, 1], beta='MBIC')
 
 print(f"Detection results:")
 print(f"  Detected change points: {result.cp_set.tolist()}")
