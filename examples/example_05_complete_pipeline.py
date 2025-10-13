@@ -216,43 +216,11 @@ print("Multi-annotator plot saved to: multi_annotator_result.png")
 print()
 
 # ============================================================================
-# Example 5: Time Series (GARCH)
+# Note: GARCH example commented out (slow and requires manual tuning)
 # ============================================================================
-print("Example 5: GARCH Volatility Detection")
-print("-" * 80)
-
-# Generate GARCH data
-data_dict = make_garch_change(
-    n_samples=600,
-    n_changepoints=2,
-    volatility_regimes=['low', 'high', 'low'],
-    seed=42
-)
-
-print(f"Generated GARCH data:")
-print(f"  True change points: {data_dict['changepoints']}")
-print(f"  Volatility regimes: {data_dict['metadata']['volatility_regimes']}")
-print(f"  Avg volatility: {[f'{v:.3f}' for v in data_dict['metadata']['avg_volatility_per_segment']]}")
-print()
-
-# Detect (GARCH uses vanilla PELT)
-result = fastcpd(data_dict['data'], family='garch', order=[1, 1], beta='MBIC')
-
-print(f"Detection results:")
-print(f"  Detected change points: {result.cp_set.tolist()}")
-print()
-
-# Evaluate
-metrics = evaluate_all(
-    true_cps=data_dict['changepoints'],
-    pred_cps=result.cp_set.tolist(),
-    n_samples=len(data_dict['data']),
-    margin=10
-)
-
-print(f"Evaluation:")
-print(f"  F1 Score: {metrics['point_metrics']['f1_score']:.3f}")
-print()
+# Advanced models like GARCH may require manual parameter tuning for best results.
+# See the full documentation for advanced time series examples.
+# ============================================================================
 
 # ============================================================================
 # Summary
@@ -266,7 +234,6 @@ print("  1. Mean change detection with visualization")
 print("  2. GLM (binomial) detection")
 print("  3. Algorithm comparison (PELT vs SeGD vs Hybrid)")
 print("  4. Multi-annotator evaluation with covering metric")
-print("  5. GARCH volatility detection")
 print()
 print("✅ Files created:")
 print("  - mean_detection_result.png")
@@ -281,7 +248,7 @@ print("  - Visualizations reveal patterns metrics might miss")
 print()
 print("🚀 Next steps:")
 print("  - Adapt this pipeline to your data")
-print("  - Tune beta parameter for your application")
+print("  - Use MBIC/BIC for automatic penalty selection")
 print("  - Choose appropriate margin for evaluation")
 print()
 print("=" * 80)

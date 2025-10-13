@@ -142,77 +142,11 @@ print("Visualization saved to: examples/workflow2_glm.png")
 print()
 
 # ============================================================================
-# Workflow 3: GARCH Detection
+# Note: GARCH model commented out (slow and may require manual beta tuning)
 # ============================================================================
-print("=" * 70)
-print("Workflow 3: GARCH Volatility Detection")
-print("-" * 70)
-print()
-
-# Step 1: Generate GARCH data
-print("Step 1: Generate GARCH data with volatility regimes")
-data_dict = make_garch_change(
-    n_samples=600,
-    n_changepoints=2,
-    volatility_regimes=['low', 'high', 'low'],
-    seed=42
-)
-
-true_cps = data_dict['changepoints']
-data = data_dict['data']
-print(f"  Generated {len(data)} samples")
-print(f"  True change points: {true_cps}")
-print(f"  Volatility regimes: {data_dict['metadata']['volatility_regimes']}")
-print(f"  Avg volatility per segment: {[f'{v:.4f}' for v in data_dict['metadata']['avg_volatility_per_segment']]}")
-print()
-
-# Step 2: Detect change points
-print("Step 2: Detect change points with fastcpd (GARCH family)")
-result = fastcpd(data, family='garch', order=[1, 1], beta='MBIC')
-pred_cps = result.cp_set.tolist()
-print(f"  Detected change points: {pred_cps}")
-print()
-
-# Step 3: Evaluate
-print("Step 3: Evaluate detection performance")
-pr_result = precision_recall(true_cps, pred_cps, margin=20)
-print(f"  Precision: {pr_result['precision']:.4f}")
-print(f"  Recall:    {pr_result['recall']:.4f}")
-print(f"  F1 Score:  {pr_result['f1_score']:.4f}")
-if pr_result['precision'] == 1.0 and pr_result['recall'] == 1.0:
-    print("  ✅ Perfect detection!")
-print()
-
-# Step 4: Visualize
-fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(12, 6))
-
-# Plot returns
-ax1.plot(data, linewidth=0.8, alpha=0.7, label='Returns', color='blue')
-for cp in true_cps:
-    ax1.axvline(cp, color='green', linestyle='--', linewidth=2, alpha=0.7)
-for cp in pred_cps:
-    ax1.axvline(cp, color='red', linestyle=':', linewidth=2, alpha=0.7)
-ax1.set_title('GARCH Detection - Returns')
-ax1.set_ylabel('Returns')
-ax1.legend()
-ax1.grid(True, alpha=0.3)
-
-# Plot volatility
-ax2.plot(data_dict['volatility'], linewidth=1.5, alpha=0.8, label='Volatility', color='orange')
-for cp in true_cps:
-    ax2.axvline(cp, color='green', linestyle='--', linewidth=2, alpha=0.7, label='True CP' if cp == true_cps[0] else '')
-for cp in pred_cps:
-    ax2.axvline(cp, color='red', linestyle=':', linewidth=2, alpha=0.7, label='Detected CP' if cp == pred_cps[0] else '')
-ax2.set_title('GARCH Detection - Conditional Volatility')
-ax2.set_xlabel('Sample')
-ax2.set_ylabel('Volatility')
-ax2.legend()
-ax2.grid(True, alpha=0.3)
-
-plt.tight_layout()
-plt.savefig('/Users/xianyangzhang/My Drive/fastcpd-python/examples/workflow3_garch.png', dpi=150, bbox_inches='tight')
-print("Visualization saved to: examples/workflow3_garch.png")
-print()
+# Workflow 3: GARCH requires manual parameter tuning for best results.
+# See glm_lasso_examples.py for advanced model examples.
+# ============================================================================
 
 # ============================================================================
 # Performance Comparison
@@ -225,7 +159,6 @@ print()
 results_summary = [
     ("Mean Change", "Core Model", 3, len([cp for cp in pred_cps if any(abs(cp - t) <= 10 for t in data_dict['changepoints'])])),
     ("GLM (Binomial)", "GLM Model", 2, 2),  # From workflow 2
-    ("GARCH", "Time Series", 2, 2)  # From workflow 3
 ]
 
 print(f"{'Model':<20} {'Status':<15} {'True CPs':<10} {'Detected':<10} {'Result'}")
@@ -249,16 +182,16 @@ print("  3. Evaluate with comprehensive metrics")
 print("  4. Visualize results")
 print()
 print("Capabilities:")
-print("  ✅ GLM detection (binomial/poisson)")
-print("  ✅ GARCH volatility detection")
+print("  ✅ Mean and variance change detection")
+print("  ✅ GLM detection (binomial)")
 print("  ✅ Rich metadata for analysis")
 print("  ✅ Comprehensive evaluation metrics")
 print()
 print("Best Practices:")
-print("  - Use appropriate margin for evaluation (depends on data resolution)")
+print("  - Use automatic penalty (MBIC/BIC) for reliable results")
 print("  - Check metadata (SNR, R², AUC) to assess data quality")
 print("  - Visualize both true and detected CPs")
-print("  - Try different beta values for sensitivity analysis")
+print("  - Use appropriate margin for evaluation (depends on data resolution)")
 print()
 print("All visualizations saved to examples/ directory!")
 print()
