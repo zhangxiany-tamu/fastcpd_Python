@@ -116,13 +116,8 @@ endif()
 # Help auditwheel/auditing tools discover and fix up linked libs on Linux
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-# Install Python source files
-install(DIRECTORY ${CMAKE_SOURCE_DIR}/fastcpd/
-  DESTINATION fastcpd
-  FILES_MATCHING PATTERN "*.py")
-
 # Install the extension module
-# Use both LIBRARY (Unix .so/.dylib) and RUNTIME (Windows .dll) for cross-platform support
+# Python files are handled by wheel.packages, only install the .so
 install(TARGETS _fastcpd_impl
   LIBRARY DESTINATION fastcpd
   RUNTIME DESTINATION fastcpd)

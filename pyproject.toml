@@ -68,8 +68,7 @@ Issues = "https://github.com/zhangxiany-tamu/fastcpd_Python/issues"
 
 [tool.scikit-build]
 sdist.include = ["src/*.cc", "src/*.h", "src/*.f", "src/*.f90"]
-# Don't use wheel.packages - let CMake install handle everything
-# wheel.packages = ["fastcpd"]
+wheel.packages = ["fastcpd"]
 cmake.version = ">=3.18"
 build.verbose = true
 build-dir = "build/{wheel_tag}"
