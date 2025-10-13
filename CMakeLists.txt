@@ -116,8 +116,8 @@ endif()
 # Help auditwheel/auditing tools discover and fix up linked libs on Linux
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
-# Install the extension module
-# Python files are handled by wheel.packages, only install the .so
+# Install the extension module directly to scikit-build-core's staging directory
+# Use SKBUILD_PLATLIB_DIR to install to the correct wheel location
 install(TARGETS _fastcpd_impl
-  LIBRARY DESTINATION fastcpd
-  RUNTIME DESTINATION fastcpd)
+  LIBRARY DESTINATION ${SKBUILD_PLATLIB_DIR}/fastcpd
+  RUNTIME DESTINATION ${SKBUILD_PLATLIB_DIR}/fastcpd)
