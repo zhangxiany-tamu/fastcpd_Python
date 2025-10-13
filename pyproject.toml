@@ -81,7 +81,8 @@ BUILD_TESTING = "OFF"
 build = "cp38-* cp39-* cp310-* cp311-* cp312-* cp313-*"
 skip = "*-musllinux_*"
 test-requires = "pytest numpy scipy matplotlib statsmodels arch"
-test-command = "pytest {package}/fastcpd/tests --tb=short"
+# Run tests against the INSTALLED wheel, not the source tree
+test-command = "pytest --pyargs fastcpd.tests --tb=short"
 
 [tool.cibuildwheel.macos]
 archs = ["x86_64", "arm64"]
