@@ -86,9 +86,15 @@ def _fastcpd_lasso_sen(
     err_sd_mean = np.mean(err_sd)
     act_num_mean = np.mean(act_num)
 
-    # CRITICAL: R adjusts beta for LASSO (fastcpd.cc line 977)
-    # beta_ = beta_ * (1 + mean(active_coefficients_count_))
-    beta_adjusted = beta_val * (1 + act_num_mean)
+    # Beta adjustment (R line 977):
+    # - For SeGD (vanilla_percentage < 1): Adjust beta to account for model complexity
+    # - For pure PELT (vanilla_percentage = 1): Use unadjusted beta since we do full optimization
+    if vanilla_percentage >= 1.0:
+        # Pure PELT: no adjustment needed (full optimization finds optimal beta)
+        beta_adjusted = beta_val
+    else:
+        # SeGD: adjust beta for model complexity (R line 977)
+        beta_adjusted = beta_val * (1 + act_num_mean)
 
     # Run PELT/SEN algorithm
     change_points_raw = _pelt_lasso(
