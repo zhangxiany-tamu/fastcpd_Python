@@ -118,5 +118,7 @@ endif()
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
 # Install the extension module
-# Install relative to CMAKE_INSTALL_PREFIX (controlled by wheel.install-dir in pyproject.toml)
-install(TARGETS _fastcpd_impl LIBRARY DESTINATION .)
+# Use both LIBRARY (Unix .so/.dylib) and RUNTIME (Windows .dll) for cross-platform support
+install(TARGETS _fastcpd_impl
+  LIBRARY DESTINATION fastcpd
+  RUNTIME DESTINATION fastcpd)
