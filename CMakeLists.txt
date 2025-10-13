@@ -103,6 +103,14 @@ if(APPLE)
   )
 endif()
 
+if(UNIX AND NOT APPLE)
+  # Ensure the wheel's bundled libs can be found at runtime on Linux
+  set_target_properties(_fastcpd_impl PROPERTIES
+    INSTALL_RPATH "$ORIGIN"
+    BUILD_WITH_INSTALL_RPATH TRUE
+  )
+endif()
+
 # Help auditwheel/auditing tools discover and fix up linked libs on Linux
 set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
 
