@@ -261,6 +261,13 @@ TESTING_REPORT.md
 RELEASE_CHECKLIST.md
 FINAL_RELEASE_SUMMARY.md
 
+# Internal comparison tests (not for public release)
+test_nonparametric_*.py
+test_ruptures_*.py
+test_beta_selection.py
+test_scale_sensitivity.py
+test_rank_formula_check.py
+
 # Internal benchmarking and testing
 benchmarks/
 

@@ -159,7 +159,7 @@ def _rank_cost_factory(y: np.ndarray) -> Tuple[Callable[[int, int], float], int]
         if L <= 0:
             return 0.0
         mean_r = (pref[b] - pref[a]) / float(L)
-        return float(L) * float(mean_r.T @ Sigma_inv @ mean_r)
+        return -float(L) * float(mean_r.T @ Sigma_inv @ mean_r)
 
     min_len = max(2, d + 1)
     return cost_fn, min_len
