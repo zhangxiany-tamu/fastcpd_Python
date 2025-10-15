@@ -74,6 +74,37 @@ result = variance(data, beta="MBIC")
 result = meanvariance(data, beta="MBIC")
 ```
 
+### AR Model Change Detection
+
+Detect changes in autoregressive model parameters:
+
+```python
+from fastcpd.segmentation import ar
+
+# Generate AR(1) data with coefficient change
+np.random.seed(100)
+n = 300
+
+# First segment: AR(1) with φ = 0.8
+data1 = np.zeros(150)
+for i in range(1, 150):
+    data1[i] = 0.8 * data1[i-1] + np.random.normal(0, 0.8)
+
+# Second segment: AR(1) with φ = -0.7
+data2 = np.zeros(150)
+for i in range(1, 150):
+    data2[i] = -0.7 * data2[i-1] + np.random.normal(0, 0.8)
+
+data = np.concatenate([data1, data2])
+
+# Detect change points
+result = ar(data, p=1, beta="MBIC")
+print(f"Detected change points: {result.cp_set}")
+# Output: [150]
+```
+
+![AR Change Detection](ar_change_detection.png)
+
 ### GLM and Regression Models
 
 ```python
