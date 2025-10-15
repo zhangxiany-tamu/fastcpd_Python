@@ -16,7 +16,7 @@ jobs:
       matrix:
         include:
           - os: ubuntu-latest
-            cibw_archs: "x86_64 aarch64"
+            cibw_archs: "x86_64"  # Temporarily disable aarch64 due to CentOS SCL repo issues
           - os: macos-12  # Intel runner for x86_64 wheels
             cibw_archs: "x86_64"
           - os: macos-latest  # Apple Silicon runner for arm64 wheels
