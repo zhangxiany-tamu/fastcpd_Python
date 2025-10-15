@@ -1,6 +1,6 @@
 """Main fastcpd function and result class."""
 
-from typing import Callable, Optional, Union
+from typing import Callable, Optional, Union, List
 import numpy as np
 from dataclasses import dataclass
 
@@ -72,6 +72,42 @@ class FastcpdResult:
         return fig, ax
 
 
+def _variance_mean_rice(data: np.ndarray) -> np.ndarray:
+    """Rice estimator for variance in mean change models (matches R).
+
+    For univariate data returns shape (1, 1). For multivariate, returns (d, d).
+    Adds a tiny jitter on the diagonal if not positive definite.
+    """
+    data = np.asarray(data, dtype=np.float64)
+    if data.ndim == 1:
+        data = data.reshape(-1, 1)
+    if data.shape[0] < 2:
+        return np.eye(data.shape[1], dtype=np.float64)
+    diffs = np.diff(data, axis=0)
+    # Average outer product of differences divided by 2
+    cov = (diffs.T @ diffs) / (2.0 * diffs.shape[0])
+    # Ensure symmetric
+    cov = (cov + cov.T) * 0.5
+    # Ensure positive definiteness with minimal jitter if needed
+    try:
+        np.linalg.cholesky(cov)
+    except np.linalg.LinAlgError:
+        eps = 1e-10
+        eye = np.eye(cov.shape[0], dtype=np.float64)
+        while True:
+            try:
+                np.linalg.cholesky(cov + eps * eye)
+                cov = cov + eps * eye
+                break
+            except np.linalg.LinAlgError:
+                eps *= 10.0
+                if eps > 1e-2:
+                    # Fallback to identity if still not PD
+                    cov = eye
+                    break
+    return cov
+
+
 def fastcpd(
     data: Union[np.ndarray, list],
     beta: Union[str, float] = "MBIC",
@@ -87,7 +123,7 @@ def fastcpd(
     cost_gradient: Optional[Callable] = None,
     cost_hessian: Optional[Callable] = None,
     cp_only: bool = False,
-    vanilla_percentage: float = 0.0,
+    vanilla_percentage: Union[float, str] = 0.0,
     warm_start: bool = True,
     lower: Optional[list] = None,
     upper: Optional[list] = None,
@@ -98,6 +134,7 @@ def fastcpd(
     multiple_epochs: Optional[Callable[[int], int]] = None,
     lasso_alpha: float = 1.0,
     lasso_cv: bool = False,
+    min_segment_length: Optional[int] = None,
 ) -> FastcpdResult:
     """Fast change point detection using sequential gradient descent.
 
@@ -159,6 +196,36 @@ def fastcpd(
         >>> result = fastcpd(data, family="mean")
         >>> result.plot()
     """
+    def _auto_vanilla(n_obs_val: int, fam: str) -> float:
+        # Adaptive default based on data size and family
+        if fam in ["mean", "variance", "meanvariance", "ar", "var", "arma", "garch"]:
+            # Time series and moment families default to PELT for stability/accuracy
+            return 1.0
+        if n_obs_val <= 200:
+            return 1.0
+        if n_obs_val <= 500:
+            return 0.5
+        return 0.0
+
+    def _enforce_min_segment_length(cp: np.ndarray, n_total: int, min_len: int) -> np.ndarray:
+        if min_len is None or min_len <= 0:
+            return cp
+        cp_list = list(map(int, sorted(cp.tolist())))
+        changed = True
+        while changed and cp_list:
+            changed = False
+            boundaries = [0] + cp_list + [n_total]
+            seg_lengths = [boundaries[i+1] - boundaries[i] for i in range(len(boundaries)-1)]
+            # Find any short segment (exclude first and last only if they are bounded by CPs)
+            for i, seg_len in enumerate(seg_lengths):
+                if seg_len < min_len and (i > 0 and i < len(seg_lengths) - 1):
+                    # Remove the change point that creates this short segment
+                    # Short segment sits between cp_list[i-1] and cp_list[i]
+                    # Remove the nearer CP to merge with larger neighbor; choose to drop right CP
+                    del cp_list[i-1 if seg_lengths[i-1] < seg_lengths[i+1] else i]
+                    changed = True
+                    break
+        return np.array(cp_list, dtype=float)
     # For time series families (AR, VAR, ARMA, GARCH), use Python implementations
     if family in ['ar', 'var', 'arma', 'garch']:
         from fastcpd.pelt_ts import _fastcpd_ar, _fastcpd_var
@@ -212,7 +279,7 @@ def fastcpd(
             # Use vanilla PELT with statsmodels (pure Python, no R dependency)
             result_dict = _fastcpd_arma_vanilla(data, order, beta, trim)
 
-            return FastcpdResult(
+            result_obj = FastcpdResult(
                 raw_cp_set=result_dict['raw_cp_set'],
                 cp_set=result_dict['cp_set'],
                 cost_values=result_dict['cost_values'],
@@ -221,6 +288,10 @@ def fastcpd(
                 data=result_dict['data'],
                 family=result_dict['family'],
             )
+            # Optional post-processing: enforce minimum segment length
+            if min_segment_length and min_segment_length > 0:
+                result_obj.cp_set = _enforce_min_segment_length(result_obj.cp_set, len(result_obj.data), min_segment_length)
+            return result_obj
         elif family == 'garch':
             from fastcpd.pelt_garch_vanilla import _fastcpd_garch_vanilla
 
@@ -249,7 +320,7 @@ def fastcpd(
             # Use vanilla PELT with arch package (pure Python, no R dependency)
             result_dict = _fastcpd_garch_vanilla(data, order, beta, trim)
 
-            return FastcpdResult(
+            result_obj = FastcpdResult(
                 raw_cp_set=result_dict['raw_cp_set'],
                 cp_set=result_dict['cp_set'],
                 cost_values=result_dict['cost_values'],
@@ -258,9 +329,19 @@ def fastcpd(
                 data=result_dict['data'],
                 family=result_dict['family'],
             )
+            if min_segment_length and min_segment_length > 0:
+                result_obj.cp_set = _enforce_min_segment_length(result_obj.cp_set, len(result_obj.data), min_segment_length)
+            return result_obj
 
     # For GLM, LASSO, and linear regression families, use Python implementations
     if family in ['binomial', 'poisson', 'lasso', 'lm']:
+        # Compute adaptive vanilla if requested
+        data_arr_for_len = np.asarray(data)
+        n_obs_for_len = len(data_arr_for_len) if data_arr_for_len.ndim == 1 else data_arr_for_len.shape[0]
+        if isinstance(vanilla_percentage, str) and vanilla_percentage.lower() == 'auto':
+            vanilla_val = _auto_vanilla(n_obs_for_len, family)
+        else:
+            vanilla_val = float(vanilla_percentage)
         # Linear regression has its own implementation (needs variance estimation)
         if family == 'lm':
             from fastcpd.pelt_lm import _fastcpd_lm
@@ -271,14 +352,14 @@ def fastcpd(
         elif family == 'lasso':
             from fastcpd.pelt_lasso import _fastcpd_lasso_sen
             result_dict = _fastcpd_lasso_sen(
-                data, beta, vanilla_percentage, trim, segment_count
+                data, beta, vanilla_val, trim, segment_count
             )
         # Binomial/Poisson: Use SEN implementation if vanilla_percentage is specified
-        elif vanilla_percentage != 1.0:
+        elif vanilla_val != 1.0:
             from fastcpd.pelt_sen import _fastcpd_sen
             result_dict = _fastcpd_sen(
                 data, beta, cost_adjustment, family, segment_count, trim,
-                warm_start, vanilla_percentage
+                warm_start, vanilla_val
             )
         else:
             # Use pure PELT implementation (vanilla_percentage = 1.0)
@@ -286,7 +367,7 @@ def fastcpd(
                 data, beta, cost_adjustment, family, segment_count, trim,
                 warm_start, lasso_alpha, lasso_cv
             )
-        return FastcpdResult(
+        result_obj = FastcpdResult(
             raw_cp_set=result_dict['raw_cp_set'],
             cp_set=result_dict['cp_set'],
             cost_values=result_dict['cost_values'],
@@ -295,6 +376,9 @@ def fastcpd(
             data=result_dict['data'],
             family=result_dict['family'],
         )
+        if min_segment_length and min_segment_length > 0:
+            result_obj.cp_set = _enforce_min_segment_length(result_obj.cp_set, len(result_obj.data), min_segment_length)
+        return result_obj
 
     # Convert data to numpy array
     data = np.asarray(data, dtype=np.float64)
@@ -319,8 +403,10 @@ def fastcpd(
             # meanvariance has mean (n_dim) + covariance matrix (n_dim^2) parameters
             p = n_dim + n_dim * n_dim
 
-    # For mean/variance families without SEN implementation, vanilla_percentage must be 1.0
-    if family in ['mean', 'variance', 'meanvariance'] and vanilla_percentage < 1.0:
+    # For mean/variance families without SEN implementation, use PELT; allow 'auto'
+    if isinstance(vanilla_percentage, str) and vanilla_percentage.lower() == 'auto':
+        vanilla_percentage = 1.0
+    if family in ['mean', 'variance', 'meanvariance'] and float(vanilla_percentage) < 1.0:
         vanilla_percentage = 1.0
 
     # Calculate beta if string
@@ -344,8 +430,10 @@ def fastcpd(
         upper = []
     if line_search is None:
         line_search = []
-    if variance_estimate is None:
-        # Create proper empty 2D array (0, 0) shape like arma::mat()
+    # Variance handling to match fastcpd R implementation
+    if family == 'mean' and (variance_estimate is None or np.asarray(variance_estimate).size == 0):
+        variance_estimate = _variance_mean_rice(data)
+    elif variance_estimate is None:
         variance_estimate = np.array([], dtype=np.float64).reshape(0, 0)
 
     # Ensure variance_estimate is 2D
@@ -386,7 +474,7 @@ def fastcpd(
         cost_gradient=cost_gradient,
         cost_hessian=cost_hessian,
         cp_only=cp_only,
-        vanilla_percentage=vanilla_percentage,
+        vanilla_percentage=float(vanilla_percentage),
         warm_start=warm_start,
         lower=lower,
         upper=upper,
@@ -398,7 +486,7 @@ def fastcpd(
     )
 
     # Convert result to numpy arrays
-    return FastcpdResult(
+    result_obj = FastcpdResult(
         raw_cp_set=np.array(result.raw_cp_set),
         cp_set=np.array(result.cp_set),
         cost_values=np.array(result.cost_values),
@@ -407,3 +495,6 @@ def fastcpd(
         data=data,
         family=family,
     )
+    if min_segment_length and min_segment_length > 0:
+        result_obj.cp_set = _enforce_min_segment_length(result_obj.cp_set, len(result_obj.data), min_segment_length)
+    return result_obj

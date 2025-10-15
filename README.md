@@ -26,6 +26,10 @@ cd fastcpd_Python
 # Install with editable mode
 pip install -e .
 
+# Optional extras for examples/benchmarks/time series notebooks
+# All examples and notebooks
+pip install -e .[dev,test,benchmark,timeseries]
+
 # Optional: Install Numba for 7-14x GLM speedup
 pip install numba
 ```
@@ -130,7 +134,7 @@ result = fastcpd(
     data,
     family="binomial",        # or "poisson"
     beta="MBIC",              # or "BIC", "MDL", or numeric
-    vanilla_percentage=0.5    # 0=SeGD (fast), 1=PELT (accurate)
+    vanilla_percentage='auto' # 'auto' picks 1.0 for n<=200, 0.5 for 200-500, else 0.0
 )
 
 print(f"Change points: {result.cp_set}")
@@ -193,10 +197,10 @@ vanilla_percentage=0.5  # Hybrid (balanced)
 vanilla_percentage=1.0  # Pure PELT (most accurate)
 ```
 
-**Recommended settings:**
-- n ≤ 200: `vanilla_percentage=1.0` (best accuracy)
-- n = 200-500: `vanilla_percentage=0.5` (balanced)
-- n > 500: `vanilla_percentage=0.0` (prioritize speed)
+You can also set `vanilla_percentage='auto'` and the library will pick:
+- n ≤ 200: 1.0 (best accuracy)
+- n = 200-500: 0.5 (balanced)
+- n > 500: 0.0 (prioritize speed)
 
 
 ## Supported Models

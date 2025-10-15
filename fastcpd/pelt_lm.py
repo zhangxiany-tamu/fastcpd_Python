@@ -139,8 +139,9 @@ def _fastcpd_lm(
     data = np.asarray(data, dtype=np.float64)
     n, n_cols = data.shape
 
-    # Number of predictors
-    p = n_cols - p_response
+    # Number of predictors and effective parameter count (match R)
+    n_predictors = n_cols - p_response
+    p = n_predictors if p_response == 1 else n_predictors * p_response
 
     # Estimate variance (matches R lines 391-392)
     if p_response == 1:
@@ -310,9 +311,9 @@ def _segment_cost_lm(
             y_pred = X @ theta
             residuals = y - y_pred
 
-            # RSS / variance (Gaussian negative log-likelihood)
+            # Match R: use deviance ~ RSS/phi with phi=1; adjust beta by sigma upstream
             rss = np.sum(residuals ** 2)
-            cost = 0.5 * rss / variance_est
+            cost = 0.5 * rss
 
         else:
             # Multivariate response

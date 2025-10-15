@@ -294,7 +294,6 @@ try:
             'poisson': fit_poisson_fast,
             'lm': fit_linear_regression,
         }
-        print("⚡ Using Numba-accelerated GLM fitters (5-10x faster)")
     else:
         # Fall back to sklearn
         GLM_FITTERS = {
