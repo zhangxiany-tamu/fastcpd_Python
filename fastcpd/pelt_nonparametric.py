@@ -279,7 +279,7 @@ def calibrate_beta_n_bkps(
     solver: Callable[[float], Tuple[np.ndarray, np.ndarray]],
     target_k: int,
     beta_min: float = 0.0,
-    beta_max: float = 1e6,
+    beta_max: float = 1e9,
     max_iter: int = 20,
 ) -> Tuple[float, np.ndarray, np.ndarray]:
     """Bisection on beta to reach target number of change points.
@@ -295,9 +295,12 @@ def calibrate_beta_n_bkps(
     if len(cp) < target_k:
         return lo, raw, cp
     raw, cp = solver(hi)
-    while len(cp) > target_k and hi < 1e12:
-        hi *= 2
+    # Expand hi if needed (guarded)
+    expand = 0
+    while len(cp) > target_k and hi < 1e16 and expand < 8:
+        hi *= 10
         raw, cp = solver(hi)
+        expand += 1
 
     for _ in range(max_iter):
         mid = (lo + hi) / 2.0

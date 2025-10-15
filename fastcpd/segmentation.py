@@ -344,6 +344,8 @@ def rank(
     n_bkps: Optional[int] = None,
     trim: float = 0.02,
     min_segment_length: Optional[int] = None,
+    beta_min: float = 0.0,
+    beta_max: float = 1e9,
 ) -> FastcpdResult:
     """Nonparametric rank-based change detection (distribution-free).
 
@@ -363,7 +365,7 @@ def rank(
         def solver(b: float):
             return run_rank(y, beta=b, trim=trim, min_segment_length=min_segment_length)
 
-        beta_chosen, raw_cp, cp = calibrate_beta_n_bkps(solver, n_bkps)
+        beta_chosen, raw_cp, cp = calibrate_beta_n_bkps(solver, n_bkps, beta_min=beta_min, beta_max=beta_max)
     else:
         raw_cp, cp = run_rank(y, beta=float(beta), trim=trim, min_segment_length=min_segment_length)
         beta_chosen = float(beta)
