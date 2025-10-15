@@ -46,6 +46,7 @@ pip install numba
 
 ```python
 import numpy as np
+import matplotlib.pyplot as plt
 from fastcpd.segmentation import mean
 
 # Generate data with mean changes
@@ -60,25 +61,70 @@ data = np.concatenate([
 result = mean(data, beta="MBIC")
 print(f"Detected change points: {result.cp_set}")
 # Output: [100, 200]
+
+# Plot
+plt.figure(figsize=(12, 4))
+plt.plot(data, label='Data', linewidth=1)
+for cp in result.cp_set:
+    plt.axvline(cp, color='red', linestyle='--', linewidth=2, label='Detected Change Point')
+plt.xlabel('Time')
+plt.ylabel('Value')
+plt.title('Mean Change Detection Example')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig('mean_change_detection.png', dpi=150)
+plt.show()
 ```
 
-### Variance and Mean+Variance
+![Mean Change Detection](docs/images/mean_change_example.png)
+
+### Variance Change Detection
 
 ```python
-from fastcpd.segmentation import variance, meanvariance
+import numpy as np
+import matplotlib.pyplot as plt
+from fastcpd.segmentation import variance
 
-# Variance changes only
+# Generate data with variance changes
+np.random.seed(42)
+data = np.concatenate([
+    np.random.normal(0, 0.5, 100),
+    np.random.normal(0, 2.5, 100),
+    np.random.normal(0, 0.5, 100)
+])
+
+# Detect change points
 result = variance(data, beta="MBIC")
+print(f"Detected change points: {result.cp_set}")
+# Output: [100, 200]
 
-# Both mean and variance changes
-result = meanvariance(data, beta="MBIC")
+# Plot
+plt.figure(figsize=(12, 4))
+plt.plot(data, label='Data', linewidth=1, color='green')
+for cp in result.cp_set:
+    plt.axvline(cp, color='red', linestyle='--', linewidth=2, label='Detected Change Point')
+plt.xlabel('Time')
+plt.ylabel('Value')
+plt.title('Variance Change Detection Example')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig('variance_change_detection.png', dpi=150)
+plt.show()
 ```
+
+![Variance Change Detection](docs/images/variance_change_example.png)
+
+For combined mean and variance changes, use `meanvariance(data, beta="MBIC")`
 
 ### AR Model Change Detection
 
 Detect changes in autoregressive model parameters:
 
 ```python
+import numpy as np
+import matplotlib.pyplot as plt
 from fastcpd.segmentation import ar
 
 # Generate AR(1) data with coefficient change
@@ -101,9 +147,26 @@ data = np.concatenate([data1, data2])
 result = ar(data, p=1, beta="MBIC")
 print(f"Detected change points: {result.cp_set}")
 # Output: [150]
+
+# Plot
+plt.figure(figsize=(12, 4))
+plt.plot(data, label='AR(1) Data', linewidth=1, alpha=0.7)
+plt.axvline(150, color='gray', linestyle=':', linewidth=2, label='True Change Point')
+for cp in result.cp_set:
+    plt.axvline(cp, color='red', linestyle='--', linewidth=2, label='Detected Change Point')
+plt.xlabel('Time')
+plt.ylabel('Value')
+plt.title('AR Model Change Point Detection')
+plt.text(75, plt.ylim()[1]*0.9, 'AR(1): φ=0.8', ha='center')
+plt.text(225, plt.ylim()[1]*0.9, 'AR(1): φ=-0.7', ha='center')
+plt.legend()
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig('ar_change_detection.png', dpi=150)
+plt.show()
 ```
 
-![AR Change Detection](ar_change_detection.png)
+![AR Change Detection](docs/images/ar_change_example.png)
 
 ### GLM and Regression Models
 
