@@ -10,7 +10,7 @@ def test_imports():
     from fastcpd import segmentation
     from fastcpd.fastcpd import fastcpd as fastcpd_func
 
-    assert fastcpd.__version__ == "0.18.0"
+    assert fastcpd.__version__ == "0.18.1"
 
 
 def test_mean_change_univariate():
