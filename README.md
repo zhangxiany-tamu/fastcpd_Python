@@ -4,8 +4,14 @@
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Test PyPI](https://img.shields.io/badge/Test%20PyPI-0.18.1-blue.svg)](https://test.pypi.org/project/pyfastcpd/)
 
 A Python library for detecting change points in time series and sequential data using PELT (Pruned Exact Linear Time) and SeGD (Sequential Gradient Descent) algorithms.
+
+**📦 Now available on [Test PyPI](https://test.pypi.org/project/pyfastcpd/) for testing!** Try it with:
+```bash
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ pyfastcpd
+```
 
 **Features:**
 - Parametric models: mean/variance, GLM (binomial/Poisson), linear/LASSO regression, ARMA/GARCH
@@ -16,7 +22,15 @@ A Python library for detecting change points in time series and sequential data 
 
 ## Installation
 
-**Note**: This package is not yet available on PyPI. Install from source:
+### From Test PyPI (Recommended for Testing)
+
+The package is available on Test PyPI as `pyfastcpd`:
+
+```bash
+pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ pyfastcpd
+```
+
+### From Source (For Development)
 
 ```bash
 # Clone repository
@@ -27,7 +41,6 @@ cd fastcpd_Python
 pip install -e .
 
 # Optional extras for examples/benchmarks/time series notebooks
-# All examples and notebooks
 pip install -e .[dev,test,benchmark,timeseries]
 
 # Optional: Install Numba for 7-14x GLM speedup
@@ -77,7 +90,7 @@ plt.savefig('mean_change_detection.png', dpi=150)
 plt.show()
 ```
 
-![Mean Change Detection](docs/images/mean_change_example.png)
+![Mean Change Detection](https://raw.githubusercontent.com/zhangxiany-tamu/fastcpd_Python/main/docs/images/mean_change_example.png)
 
 ### Variance Change Detection
 
@@ -114,7 +127,7 @@ plt.savefig('variance_change_detection.png', dpi=150)
 plt.show()
 ```
 
-![Variance Change Detection](docs/images/variance_change_example.png)
+![Variance Change Detection](https://raw.githubusercontent.com/zhangxiany-tamu/fastcpd_Python/main/docs/images/variance_change_example.png)
 
 For combined mean and variance changes, use `meanvariance(data, beta="MBIC")`
 
@@ -166,7 +179,7 @@ plt.savefig('ar_change_detection.png', dpi=150)
 plt.show()
 ```
 
-![AR Change Detection](docs/images/ar_change_example.png)
+![AR Change Detection](https://raw.githubusercontent.com/zhangxiany-tamu/fastcpd_Python/main/docs/images/ar_change_example.png)
 
 ### GLM and Regression Models
 

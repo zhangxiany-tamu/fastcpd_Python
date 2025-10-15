@@ -3,8 +3,8 @@ requires = ["scikit-build-core>=0.8", "nanobind>=2.0"]
 build-backend = "scikit_build_core.build"
 
 [project]
-name = "fastcpd"
-version = "0.18.0"
+name = "pyfastcpd"
+version = "0.18.1"
 description = "Fast change point detection using sequential gradient descent"
 readme = "README.md"
 license = {text = "MIT"}
@@ -55,7 +55,7 @@ benchmark = [
     "pandas>=1.3",
 ]
 dev = [
-    "fastcpd[test,benchmark]",
+    "pyfastcpd[test,benchmark]",
     "black>=23.0",
     "ruff>=0.1",
     "mypy>=1.0",
