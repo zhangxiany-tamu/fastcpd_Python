@@ -3,6 +3,7 @@
 from typing import Optional, Union
 import numpy as np
 from fastcpd.fastcpd import fastcpd, FastcpdResult
+from typing import Optional, Union, Tuple
 
 
 def mean(
@@ -332,3 +333,110 @@ def lasso(
     kwargs['lasso_alpha'] = alpha
     kwargs['lasso_cv'] = cv
     return fastcpd(data, family="lasso", beta=beta, **kwargs)
+
+
+# ---------------- Nonparametric costs ----------------
+
+
+def rank(
+    data: Union[np.ndarray, list],
+    beta: Union[str, float] = 50.0,
+    n_bkps: Optional[int] = None,
+    trim: float = 0.02,
+    min_segment_length: Optional[int] = None,
+) -> FastcpdResult:
+    """Nonparametric rank-based change detection (distribution-free).
+
+    Parameters:
+        data: (n, d) array or list
+        beta: numeric penalty; if n_bkps is provided, beta is ignored
+        n_bkps: target number of change points (bisection over beta)
+        trim: boundary trim proportion
+        min_segment_length: optional minimum segment length after post-process
+    """
+    from fastcpd.pelt_nonparametric import run_rank, calibrate_beta_n_bkps
+
+    y = np.asarray(data, dtype=np.float64)
+    n = y.shape[0] if y.ndim > 1 else len(y)
+
+    if n_bkps is not None:
+        def solver(b: float):
+            return run_rank(y, beta=b, trim=trim, min_segment_length=min_segment_length)
+
+        beta_chosen, raw_cp, cp = calibrate_beta_n_bkps(solver, n_bkps)
+    else:
+        raw_cp, cp = run_rank(y, beta=float(beta), trim=trim, min_segment_length=min_segment_length)
+        beta_chosen = float(beta)
+
+    return FastcpdResult(
+        raw_cp_set=np.asarray(raw_cp),
+        cp_set=np.asarray(cp),
+        cost_values=np.array([]),
+        residuals=np.array([]),
+        thetas=np.array([]),
+        data=y if y.ndim == 2 else y.reshape(-1, 1),
+        family="rank",
+    )
+
+
+def rbf(
+    data: Union[np.ndarray, list],
+    beta: Union[str, float] = 50.0,
+    n_bkps: Optional[int] = None,
+    trim: float = 0.02,
+    min_segment_length: Optional[int] = None,
+    gamma: Optional[float] = None,
+    feature_dim: int = 256,
+    seed: int = 0,
+) -> FastcpdResult:
+    """Nonparametric Gaussian-kernel (RBF) change detection via RFF.
+
+    Parameters:
+        data: (n, d) array or list
+        beta: numeric penalty; if n_bkps is provided, beta is ignored
+        n_bkps: target number of change points (bisection over beta)
+        trim: boundary trim proportion
+        min_segment_length: optional minimum segment length after post-process
+        gamma: RBF bandwidth; defaults to 1/median^2 (pairwise)
+        feature_dim: RFF feature dimension (default 256)
+        seed: RNG seed for RFF
+    """
+    from fastcpd.pelt_nonparametric import run_rbf, calibrate_beta_n_bkps
+
+    y = np.asarray(data, dtype=np.float64)
+    n = y.shape[0] if y.ndim > 1 else len(y)
+
+    if n_bkps is not None:
+        def solver(b: float):
+            raw_cp, cp, _ = run_rbf(
+                y,
+                beta=b,
+                trim=trim,
+                min_segment_length=min_segment_length,
+                gamma=gamma,
+                feature_dim=feature_dim,
+                seed=seed,
+            )
+            return raw_cp, cp
+
+        beta_chosen, raw_cp, cp = calibrate_beta_n_bkps(solver, n_bkps)
+    else:
+        raw_cp, cp, _ = run_rbf(
+            y,
+            beta=float(beta),
+            trim=trim,
+            min_segment_length=min_segment_length,
+            gamma=gamma,
+            feature_dim=feature_dim,
+            seed=seed,
+        )
+
+    return FastcpdResult(
+        raw_cp_set=np.asarray(raw_cp),
+        cp_set=np.asarray(cp),
+        cost_values=np.array([]),
+        residuals=np.array([]),
+        thetas=np.array([]),
+        data=y if y.ndim == 2 else y.reshape(-1, 1),
+        family="rbf",
+    )
