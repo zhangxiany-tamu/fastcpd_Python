@@ -4,7 +4,7 @@
 
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Test PyPI](https://img.shields.io/badge/Test%20PyPI-0.18.1-blue.svg)](https://test.pypi.org/project/pyfastcpd/)
+[![Test PyPI](https://img.shields.io/badge/Test%20PyPI-0.18.3-blue.svg)](https://test.pypi.org/project/pyfastcpd/)
 
 A Python library for detecting change points in time series and sequential data using PELT (Pruned Exact Linear Time) and SeGD (Sequential Gradient Descent) algorithms.
 

@@ -5,7 +5,7 @@ This package provides efficient algorithms to identify points in time where the
 statistical properties of a sequence of observations change.
 """
 
-__version__ = "0.18.1"
+__version__ = "0.18.3"
 
 from fastcpd.fastcpd import fastcpd
 from fastcpd import segmentation

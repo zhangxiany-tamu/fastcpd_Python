@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.18.3] - 2025-10-16
+
+### Fixed
+- Fixed C++ compilation error: Added missing `#include <string>` in `src/ref_family_python.cc`
+- Fixed installation error on Test PyPI by updating build dependencies
+- Updated `scikit-build-core` from >=0.8 to >=0.10.0 for compatibility with modern `packaging` library
+- Added explicit `packaging>=24.0` requirement to avoid API incompatibility issues
+
+### Changed
+- Build system now requires `scikit-build-core>=0.10.0`, `nanobind>=2.0`, and `packaging>=24.0`
+
+## [0.18.2] - 2025-10-16
+
+### Fixed
+- Initial attempt to fix installation error (superseded by 0.18.3)
+
 ## [0.18.0] - 2025-10-11
 
 ### Added

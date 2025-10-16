@@ -6,6 +6,7 @@
 #include <limits>
 #include <vector>
 #include <stdexcept>
+#include <string>
 
 namespace {
 
