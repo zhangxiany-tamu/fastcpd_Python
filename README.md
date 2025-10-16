@@ -8,7 +8,7 @@
 
 A Python library for detecting change points in time series and sequential data using PELT (Pruned Exact Linear Time) and SeGD (Sequential Gradient Descent) algorithms.
 
-**📦 Now available on [Test PyPI](https://test.pypi.org/project/pyfastcpd/) for testing!** Try it with:
+**Now available on [Test PyPI](https://test.pypi.org/project/pyfastcpd/) for testing!** Try it with:
 ```bash
 pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ pyfastcpd
 ```
@@ -27,12 +27,36 @@ pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://
 The package is available on Test PyPI as `pyfastcpd`:
 
 ```bash
+# Install Armadillo first (required for building C++ extension)
+# macOS:
+brew install armadillo
+
+# Ubuntu/Debian:
+# sudo apt-get install libarmadillo-dev
+
+# Then install pyfastcpd
 pip install --index-url https://test.pypi.org/simple/ --extra-index-url https://pypi.org/simple/ pyfastcpd
 ```
 
+**Note:** Test PyPI currently only has source distribution (no pre-built wheels). You must install Armadillo before running pip install.
+
 ### From Source (For Development)
 
+**System Requirements for Building from Source:**
+- Python ≥ 3.8
+- C++17 compiler
+- **Armadillo library** (required for C++ compilation):
+  - macOS: `brew install armadillo`
+  - Ubuntu/Debian: `sudo apt-get install libarmadillo-dev`
+
 ```bash
+# Install Armadillo first (required!)
+# macOS:
+brew install armadillo
+
+# Ubuntu/Debian:
+# sudo apt-get install libarmadillo-dev
+
 # Clone repository
 git clone https://github.com/zhangxiany-tamu/fastcpd_Python.git
 cd fastcpd_Python
@@ -47,11 +71,7 @@ pip install -e .[dev,test,benchmark,timeseries]
 pip install numba
 ```
 
-**System Requirements:**
-- Python ≥ 3.8
-- **Supported Platforms**: Linux, macOS (Windows support is experimental)
-- C++17 compiler (for building from source)
-- Armadillo library (macOS: `brew install armadillo`, Ubuntu: `sudo apt-get install libarmadillo-dev`)
+**Supported Platforms:** Linux, macOS (Windows support is experimental)
 
 ## Quick Start
 
