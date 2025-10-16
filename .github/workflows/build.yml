@@ -13,6 +13,7 @@ jobs:
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false  # Don't cancel other jobs if one fails
       matrix:
         include:
           - os: ubuntu-latest
