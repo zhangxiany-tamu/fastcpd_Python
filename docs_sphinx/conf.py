@@ -12,8 +12,9 @@ sys.path.insert(0, os.path.abspath('..'))
 
 project = 'fastcpd-python'
 copyright = '2025, fastcpd developers'
-author = 'fastcpd developers'
-release = '0.18.0'
+author = 'Xianyang Zhang'
+release = '0.18.3'
+version = '0.18'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
@@ -25,9 +26,7 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
-    'sphinx_rtd_theme',
-    'nbsphinx',  # For Jupyter notebooks
-    'sphinx_copybutton',  # Copy button for code blocks
+    'sphinx_copybutton',
 ]
 
 # Napoleon settings for Google/NumPy docstring style
@@ -53,29 +52,31 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'sphinx_rtd_theme'
+html_theme = 'furo'
 html_static_path = ['_static']
 
-# Theme options
+# Furo theme options
 html_theme_options = {
-    'logo_only': False,
-    'display_version': True,
-    'prev_next_buttons_location': 'bottom',
-    'style_external_links': False,
-    'collapse_navigation': False,
-    'sticky_navigation': True,
-    'navigation_depth': 4,
-    'includehidden': True,
-    'titles_only': False
+    "light_css_variables": {
+        "color-brand-primary": "#2962ff",
+        "color-brand-content": "#2962ff",
+    },
+    "sidebar_hide_name": False,
+    "navigation_with_keys": True,
+    "source_repository": "https://github.com/zhangxiany-tamu/fastcpd_Python/",
+    "source_branch": "main",
+    "source_directory": "docs_sphinx/",
 }
 
-# Add any paths that contain custom static files (such as style sheets)
+html_title = "fastcpd"
+html_short_title = "fastcpd"
+html_logo = None
+html_favicon = None
+
+# Add CSS files
 html_css_files = [
     'custom.css',
 ]
-
-html_logo = None  # Add your logo here
-html_favicon = None  # Add your favicon here
 
 # Intersphinx mapping
 intersphinx_mapping = {

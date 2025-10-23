@@ -251,8 +251,8 @@ credentials.json
 # Internal Development Files (not for public release)
 # ============================================================================
 # Internal documentation and development notes
-docs/*
-!docs/images/
+# Note: docs/ is used for GitHub Pages, so we keep it
+docs_old/
 METRICS_DATASETS_DESIGN.md
 ROADMAP_TO_SURPASS_RUPTURES.md
 DEVELOPMENT_ROADMAP.md
