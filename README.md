@@ -5,8 +5,11 @@
 [![Python 3.8+](https://img.shields.io/badge/python-3.8+-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Test PyPI](https://img.shields.io/badge/Test%20PyPI-0.18.3-blue.svg)](https://test.pypi.org/project/pyfastcpd/)
+[![Documentation](https://img.shields.io/badge/docs-latest-brightgreen.svg)](https://zhangxiany-tamu.github.io/fastcpd_Python/)
 
 A Python library for detecting change points in time series and sequential data using PELT (Pruned Exact Linear Time) and SeGD (Sequential Gradient Descent) algorithms.
+
+**Documentation**: [https://zhangxiany-tamu.github.io/fastcpd_Python/](https://zhangxiany-tamu.github.io/fastcpd_Python/)
 
 **Now available on [Test PyPI](https://test.pypi.org/project/pyfastcpd/) for testing!** Try it with:
 ```bash
@@ -315,7 +318,8 @@ pip install numba
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Support
+## Documentation & Support
 
+- **Documentation**: [https://zhangxiany-tamu.github.io/fastcpd_Python/](https://zhangxiany-tamu.github.io/fastcpd_Python/)
 - **Issues**: [GitHub Issues](https://github.com/zhangxiany-tamu/fastcpd_Python/issues)
 - **Email**: zhangxiany@stat.tamu.edu
