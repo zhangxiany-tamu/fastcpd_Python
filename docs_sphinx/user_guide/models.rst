@@ -484,9 +484,9 @@ Detects distributional changes using Gaussian kernel methods via Random Fourier 
 
 .. math::
 
-   C(y_{s:t}) = -\frac{1}{(t-s)^2} \sum_{i,j=s}^{t} k(y_i, y_j) + \text{const}
+   C(y_{s:t}) = \sum_{i=s}^{t} k(y_i, y_i) - \frac{2}{t-s+1} \sum_{i,j=s}^{t} k(y_i, y_j)
 
-where :math:`k(x,y) = \exp(-\gamma \|x-y\|^2)` is the RBF kernel.
+where :math:`k(x,y) = \exp(-\gamma \|x-y\|^2)` is the RBF kernel. This measures variance in the kernel-embedded space.
 
 **Parameters:**
 

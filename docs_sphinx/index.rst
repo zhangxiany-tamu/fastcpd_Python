@@ -155,6 +155,7 @@ Example:
 
    advanced/algorithms
    advanced/comparison
+   advanced/music_segmentation
 
 Links
 -----

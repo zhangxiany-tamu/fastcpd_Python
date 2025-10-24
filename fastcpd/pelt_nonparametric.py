@@ -206,8 +206,14 @@ def _rbf_cost_factory(
 ) -> Tuple[Callable[[int, int], float], int, float]:
     """Return cost_fn and min segment length for RBF cost using RFF.
 
-    Using c_rbf(L) = L - (1/L) ||sum_{t in seg} phi(y_t)||^2, since k(x,x)=1,
-    and inner products approximated via RFF.
+    Using the correct kernel-based cost:
+    c(s,t) = sum_i k(y_i, y_i) - (2/L) * sum_{i,j} k(y_i, y_j)
+
+    With RBF kernel k(x,x)=1, and using RFF approximation:
+    sum_{i,j} k(y_i, y_j) ≈ ||sum_i phi(y_i)||^2
+
+    Therefore: c(s,t) = L - (2/L) * ||sum_i phi(y_i)||^2
+
     Returns (cost_fn, min_len, chosen_gamma).
     """
     if y.ndim == 1:
@@ -227,7 +233,8 @@ def _rbf_cost_factory(
         if L <= 0:
             return 0.0
         s = pref_phi[b] - pref_phi[a]
-        return float(L) - float((s @ s) / float(L))
+        # Correct formula: L - (2/L) * ||sum phi||^2
+        return float(L) - 2.0 * float((s @ s) / float(L))
 
     min_len = 2
     return cost_fn, min_len, float(gamma)
