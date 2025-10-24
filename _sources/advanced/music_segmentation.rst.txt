@@ -13,9 +13,9 @@ We use fastcpd's **RBF kernel** to detect changes in the **tempogram** - a repre
 
 .. raw:: html
 
-   <audio controls style="width: 100%; max-width: 600px; margin-bottom: 10px;">
-     <source src="../../_static/nutcracker_30s.wav" type="audio/wav">
-     <source src="../../_static/nutcracker_30s.ogg" type="audio/ogg">
+   <audio controls preload="metadata" style="width: 100%; max-width: 600px; margin-bottom: 10px;">
+     <source src="../_static/nutcracker_30s.wav" type="audio/wav">
+     <source src="../_static/nutcracker_30s.ogg" type="audio/ogg">
      Your browser does not support the audio element.
    </audio>
    <p style="font-size: 0.9em; color: #666; margin-top: 5px;">
